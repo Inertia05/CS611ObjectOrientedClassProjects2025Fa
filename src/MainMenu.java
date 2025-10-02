@@ -1,55 +1,48 @@
-package CS611ObjectOrientedClassProjects2025Fa;
+import java.util.Scanner; // Source: google
 public class MainMenu {
-    import java.util.Scanner; // Source: google
     public static void main(String[] args) {
         System.out.println("Welcome to Board Games!");
         Scanner scanner = new Scanner(System.in); 
         print("Enter player name: ");
         String name = scanner.nextLine();
         print("Hello, " + name + "!");
-        SlidingGame newGame = null;
+        Player player = new Player(name);
+        Game newGame = null;
         while (true) {
             showMenu(scanner, name); // if this returns, user chose to start a new game
-            newGame = getGameInfo(scanner);
+            String info = newGame.getGameInfo(scanner);
             newGame.initializeBoard();
-            newGame.runGame(scanner);
+            newGame.runGame(scanner);//game loop running in this method
+            // Game have ended here
         }
     }
     private static void print(String msg) {
         System.out.println(msg);
     }
 
-    private static SlidingGame getGameInfo(Scanner scanner) {
-        print("Enter puzzle height: ");
-        int height = scanner.nextInt();
-        print("Enter puzzle width: ");
-        int width = scanner.nextInt();
-
-        print("Puzzle size set to " + height + "x" + width);
-        return new SlidingGame(height, width);
-    }
-
     private static void showMenu(Scanner scanner, String name) {
         System.out.println("Menu:");
-        System.out.println("1. Start new game");
-        System.out.println("2. Exit");
+        System.out.println("1. Start sliding puzzle game");
+        System.out.println("2. Start dot and box game");
+        System.out.println("3. Exit");
         System.out.print("Choose an option: ");
         int choice = scanner.nextInt();
-        if (choice == 2) {
+        if (choice == 3) {
             System.out.println("Goodbye, " + name + "!");
             System.exit(0);
         }
-        if (choice != 1) {
+        if (choice != 1 && choice != 2) {
             throw new IllegalArgumentException("Invalid menu option: " + choice);
         }
     }
-    
 }
 
 abstract class Game {
     protected abstract void initializeBoard();
     protected abstract void runGame(Scanner scanner);
+    protected abstract String getGameInfo(Scanner scanner);
     protected abstract boolean isGameOver();
     protected abstract void printBoard();
+    protected abstract void quitToMainMenu();
 
 }
