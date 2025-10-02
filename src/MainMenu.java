@@ -11,7 +11,7 @@ public class MainMenu {
             if (choice == 1) {
                 newGame = new PuzzleGame();
             } else if (choice == 2) {
-                newGame = new DotAndBoxGame();
+                newGame = new DotsAndBoxesGame();
             }
             String info = newGame.getGameInfo(scanner);
             newGame.initializeBoard();

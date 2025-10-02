@@ -3,7 +3,7 @@ import java.util.Scanner;
 /**
  * The main class that runs the sliding puzzle game.
  */
-public class PuzzleGame {
+public class PuzzleGame extends Game {
     private static final Scanner SCANNER = new Scanner(System.in);
 
     public static void main(String[] args) {

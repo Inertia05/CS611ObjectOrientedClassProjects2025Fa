@@ -1,2 +1,2 @@
-public class DotsAndBoxesGame {
+public class DotsAndBoxesGame extends Game{
 }
