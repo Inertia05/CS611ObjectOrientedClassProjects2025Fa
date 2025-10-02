@@ -3,24 +3,23 @@ public class MainMenu {
     public static void main(String[] args) {
         System.out.println("Welcome to Board Games!");
         Scanner scanner = new Scanner(System.in); 
-        print("Enter player name: ");
-        String name = scanner.nextLine();
-        print("Hello, " + name + "!");
-        Player player = new Player(name);
+        
         Game newGame = null;
         while (true) {
-            showMenu(scanner, name); // if this returns, user chose to start a new game
+            int choice = showMenu(scanner); // if this returns, user chose to start a new game
+            if (choice == 1) {
+                newGame = new PuzzleGame();
+            } else if (choice == 2) {
+                newGame = new DotAndBoxGame();
+            }
             String info = newGame.getGameInfo(scanner);
             newGame.initializeBoard();
             newGame.runGame(scanner);//game loop running in this method
             // Game have ended here
         }
     }
-    private static void print(String msg) {
-        System.out.println(msg);
-    }
 
-    private static void showMenu(Scanner scanner, String name) {
+    private static int showMenu(Scanner scanner) {
         System.out.println("Menu:");
         System.out.println("1. Start sliding puzzle game");
         System.out.println("2. Start dot and box game");
@@ -28,12 +27,13 @@ public class MainMenu {
         System.out.print("Choose an option: ");
         int choice = scanner.nextInt();
         if (choice == 3) {
-            System.out.println("Goodbye, " + name + "!");
+            System.out.println("Goodbye!");
             System.exit(0);
         }
         if (choice != 1 && choice != 2) {
             throw new IllegalArgumentException("Invalid menu option: " + choice);
         }
+        return choice;
     }
 }
 
