@@ -1,8 +1,8 @@
 package CS611ObjectOrientedClassProjects2025Fa;
-public class Game {
+public class MainMenu {
     import java.util.Scanner; // Source: google
     public static void main(String[] args) {
-        System.out.println("Welcome to Sliding Puzzle");
+        System.out.println("Welcome to Board Games!");
         Scanner scanner = new Scanner(System.in); 
         print("Enter player name: ");
         String name = scanner.nextLine();
@@ -46,9 +46,10 @@ public class Game {
     
 }
 
-class SlidingGame {
-    private void initializeBoard() {
-        // Placeholder for board initialization logic
-    }
-    
+abstract class Game {
+    protected abstract void initializeBoard();
+    protected abstract void runGame(Scanner scanner);
+    protected abstract boolean isGameOver();
+    protected abstract void printBoard();
+
 }
