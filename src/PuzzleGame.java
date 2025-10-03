@@ -2,79 +2,88 @@ import java.util.Scanner;
 
 /**
  * The main class that runs the sliding puzzle game.
+ * It extends the abstract Game class to fit into the main menu system.
  */
 public class PuzzleGame extends Game {
-    private static final Scanner SCANNER = new Scanner(System.in);
 
-    public static void main(String[] args) {
-        System.out.println("=== Welcome to the Sliding Puzzle Game! ===");
-        String playerName = promptForName();
-        Player player = new Player(playerName);
+    private Board.PuzzleBoard board;
+    private Player player;
+    private int boardSize;
 
-        boolean playAgain;
-        do {
-            int size = promptBoardSize();
-            Board board = new Board(size);
+    // Default constructor
+    public PuzzleGame() {
+    }
 
-            System.out.println("Okay " + player.getName() + ", here’s your puzzle:");
-            System.out.print(board.getBoardAsString());
+    @Override
+    protected String getGameInfo(Scanner scanner) {
+        System.out.println("\n--- Setting up Sliding Puzzle ---");
+        System.out.print("Enter your name: ");
+        scanner.nextLine(); // Consume the leftover newline character
+        this.player = new Player(scanner.nextLine());
 
-            while (!board.isSolved()) {
-                String input = prompt(player.getName() + ", which tile do you want to slide? ");
-                int tile = parseInt(input, -1);
-
-                if (!board.slideTile(tile)) {
-                    System.out.println("Invalid move! That tile cannot be moved.");
+        // Get the desired board size from the user
+        while (true) {
+            System.out.print("Enter puzzle size (between 2 and 5): ");
+            try {
+                int size = Integer.parseInt(scanner.nextLine());
+                if (size >= 2 && size <= 5) {
+                    this.boardSize = size;
+                    break;
+                } else {
+                    System.out.println("Invalid size. Please enter a number between 2 and 5.");
                 }
-                System.out.print(board.getBoardAsString());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number.");
+            }
+        }
+        return "Player and board size are set.";
+    }
+
+    @Override
+    protected void initializeBoard() {
+        this.board = new Board.PuzzleBoard(this.boardSize);
+        System.out.println("Okay " + player.getName() + ", here’s your puzzle:");
+    }
+
+    @Override
+    protected void runGame(Scanner scanner) {
+        while (!isGameOver()) {
+            printBoard();
+            System.out.print(player.getName() + ", which tile do you want to slide? (or type 'quit'): ");
+            String input = scanner.nextLine().trim();
+
+            if (input.equalsIgnoreCase("quit")) {
+                quitToMainMenu();
+                return; // Exit the game loop to return to the menu
             }
 
-            System.out.println("Congratulations, " + player.getName() + "! You solved the puzzle!");
-            playAgain = promptYesNo("Do you want to play again? (y/n): ");
-        } while (playAgain);
-
-        System.out.println("Thanks for playing! Goodbye!");
-        SCANNER.close();
-    }
-
-    private static String prompt(String message) {
-        System.out.print(message);
-        return SCANNER.nextLine().trim();
-    }
-
-    private static String promptForName() {
-        while (true) {
-            String name = prompt("Enter your name: ");
-            if (!name.trim().isEmpty() && name.matches("[a-zA-Z ]+")) {
-                return name;
+            try {
+                int tile = Integer.parseInt(input);
+                if (!board.slideTile(tile)) {
+                    System.out.println("Invalid move! That tile is not adjacent to the empty space.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number.");
             }
-            System.out.println("Invalid name! Please use letters and spaces only.");
         }
+
+        // Game has ended (puzzle is solved)
+        printBoard(); // Show the final solved board
+        System.out.println("Congratulations, " + player.getName() + "! You solved the puzzle!");
     }
 
-    private static int promptBoardSize() {
-        while (true) {
-            String input = prompt("Enter puzzle size (between 2 and 5): ");
-            int size = parseInt(input, -1);
-            if (size >= 2 && size <= 5) return size;
-            System.out.println("Invalid input. Please enter a number between 2 and 5.");
-        }
+    @Override
+    protected boolean isGameOver() {
+        return board.isSolved();
     }
 
-    private static int parseInt(String input, int defaultValue) {
-        try {
-            return Integer.parseInt(input);
-        } catch (NumberFormatException e) {
-            return defaultValue;
-        }
+    @Override
+    protected void printBoard() {
+        System.out.println(board.getBoardAsString());
     }
 
-    private static boolean promptYesNo(String message) {
-        while (true) {
-            String input = prompt(message).toLowerCase();
-            if (input.equals("y")) return true;
-            if (input.equals("n")) return false;
-            System.out.println("Invalid input. Please enter 'y' or 'n'.");
-        }
+    @Override
+    protected void quitToMainMenu() {
+        System.out.println("Returning to the main menu...");
     }
 }

@@ -26,13 +26,17 @@ public class MainMenu {
         System.out.println("2. Start dot and box game");
         System.out.println("3. Exit");
         System.out.print("Choose an option: ");
+
         int choice = scanner.nextInt();
+        scanner.nextLine(); // <-- ADD THIS LINE to consume the leftover newline
+
         if (choice == 3) {
             System.out.println("Goodbye!");
             System.exit(0);
         }
         if (choice != 1 && choice != 2) {
-            throw new IllegalArgumentException("Invalid menu option: " + choice);
+            System.out.println("Invalid menu option: " + choice);
+            // It's better to loop than to crash, but this is fine for now.
         }
         return choice;
     }
