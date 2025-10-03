@@ -15,7 +15,7 @@ public class PuzzleGame extends Game {
     }
 
     // In PuzzleGame.java
-
+ 
     @Override
     protected String getGameInfo(Scanner scanner) {
         System.out.println("\n--- Setting up Sliding Puzzle ---");
