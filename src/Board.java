@@ -37,7 +37,12 @@ public abstract class Board {
         public String getBoardAsString() {
             StringBuilder sb = new StringBuilder();
             // CHANGED: Line repeat is based on width
-            String line = "+--".repeat(width) + "+\n";
+            StringBuilder lineBuilder = new StringBuilder();
+            for (int i = 0; i < width; i++) {
+                lineBuilder.append("+--");
+            }
+            lineBuilder.append("+\n");
+            String line = lineBuilder.toString();
             sb.append(line);
             // CHANGED: Loops use height for rows and width for columns
             for (int i = 0; i < height; i++) {
