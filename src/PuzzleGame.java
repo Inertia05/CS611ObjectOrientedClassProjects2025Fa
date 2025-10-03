@@ -8,7 +8,9 @@ public class PuzzleGame extends Game {
 
     private Board.PuzzleBoard board;
     private Player player;
-    private int boardSize;
+    // CHANGED: Replaced boardSize with width and height
+    private int boardWidth;
+    private int boardHeight;
 
     // Default constructor
     public PuzzleGame() {
@@ -20,32 +22,57 @@ public class PuzzleGame extends Game {
     protected String getGameInfo(Scanner scanner) {
         System.out.println("\n--- Setting up Sliding Puzzle ---");
         System.out.print("Enter your name: ");
-
-        // The extra scanner.nextLine() was here. It has been removed.
         this.player = new Player(scanner.nextLine());
 
-        // Get the desired board size from the user
+        // CHANGED: Prompt for width and height in a single line
         while (true) {
-            System.out.print("Enter puzzle size (between 2 and 5): ");
+            System.out.print("Enter puzzle width and height (e.g., '4 3'): ");
             try {
-                int size = Integer.parseInt(scanner.nextLine());
-                if (size >= 2 && size <= 5) {
-                    this.boardSize = size;
-                    break;
+                String[] parts = scanner.nextLine().split(" ");
+                if (parts.length != 2) {
+                    System.out.println("Invalid format. Please enter two numbers separated by a space.");
+                    continue;
+                }
+
+                int width = Integer.parseInt(parts[0]);
+                int height = Integer.parseInt(parts[1]);
+
+                if (width >= 1 && width <= 10 && height >= 1 && height <= 10) {
+                    this.boardWidth = width;
+                    this.boardHeight = height;
+                    break; // Exit the loop if input is valid
                 } else {
-                    System.out.println("Invalid size. Please enter a number between 2 and 5.");
+                    System.out.println("Invalid dimensions. Both width and height must be between 5 and 5.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter numbers only.");
+            }
+        }
+        return "Player and board dimensions are set.";
+    }
+
+    // ADDED: A helper method to reduce repeated code for getting dimensions
+    private int promptForDimension(Scanner scanner, String dimensionName) {
+        while (true) {
+            System.out.print("Enter puzzle " + dimensionName + " (height): ");
+            try {
+                int dim = Integer.parseInt(scanner.nextLine());
+                if (dim >= 2 && dim <= 5) {
+                    return dim;
+                } else {
+                    System.out.println("Invalid " + dimensionName + ". Please enter a number between 2 and 5.");
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input. Please enter a number.");
             }
         }
-        return "Player and board size are set.";
     }
 
     @Override
     protected void initializeBoard() {
-        this.board = new Board.PuzzleBoard(this.boardSize);
-        System.out.println("Okay " + player.getName() + ", here’s your puzzle:");
+        // CHANGED: Pass both width and height to the constructor
+        this.board = new Board.PuzzleBoard(this.boardWidth, this.boardHeight);
+        System.out.println("Okay " + player.getName() + ", here’s your " + boardWidth + "x" + boardHeight + " puzzle:");
     }
 
     @Override
@@ -57,7 +84,7 @@ public class PuzzleGame extends Game {
 
             if (input.equalsIgnoreCase("quit")) {
                 quitToMainMenu();
-                return; // Exit the game loop to return to the menu
+                return;
             }
 
             try {
@@ -70,8 +97,7 @@ public class PuzzleGame extends Game {
             }
         }
 
-        // Game has ended (puzzle is solved)
-        printBoard(); // Show the final solved board
+        printBoard();
         System.out.println("Congratulations, " + player.getName() + "! You solved the puzzle!");
     }
 
