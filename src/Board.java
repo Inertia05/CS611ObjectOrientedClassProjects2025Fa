@@ -160,7 +160,7 @@ public abstract class Board {
 
         // CHANGED: Constructor now accepts width and height
         public DotsAndBoxesBoard(int width, int height, Player player1, Player player2) {
-            if (width < 2 || height < 2) {
+            if (width < 1 || height < 1 || width > 10 || height > 10 ) {
                 throw new IllegalArgumentException("Grid dimensions must be at least 2.");
             }
             this.gridWidth = width;

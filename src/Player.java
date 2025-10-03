@@ -11,8 +11,9 @@ public class Player {
 
         String trimmed = name.trim();
 
-        if (!trimmed.matches("[a-zA-Z ]+")) {
-            throw new IllegalArgumentException("Player name must contain only letters and spaces.");
+        // CHANGED: Updated the regex to include numbers (0-9) and allow multiple characters (+)
+        if (!trimmed.matches("[a-zA-Z0-9 ]+")) {
+            throw new IllegalArgumentException("Player name must contain only letters, numbers, and spaces.");
         }
 
         String normalized = trimmed.replaceAll("\\s+", " ");

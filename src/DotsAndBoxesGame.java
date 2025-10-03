@@ -86,7 +86,7 @@ public class DotsAndBoxesGame extends Game {
                 if (boxesCompleted == 0) {
                     switchPlayer();
                 } else {
-                    System.out.println("You completed " + boxesCompleted + " box(es)! Go again. ⭐");
+                    System.out.println("You completed " + boxesCompleted + " box(es)! Go again.");
                 }
             } catch (Exception e) {
                 System.out.println("Invalid move! " + e.getMessage() + " Please try again.");
@@ -100,9 +100,9 @@ public class DotsAndBoxesGame extends Game {
         System.out.println("\n--- Final Score ---");
         System.out.println(player1.getName() + ": " + score1);
         System.out.println(player2.getName() + ": " + score2);
-        if (score1 > score2) System.out.println("\nCongratulations " + player1.getName() + ", you win! 🎉");
-        else if (score2 > score1) System.out.println("\nCongratulations " + player2.getName() + ", you win! 🎉");
-        else System.out.println("\nIt's a tie! 🤝");
+        if (score1 > score2) System.out.println("\nCongratulations " + player1.getName() + ", you win!");
+        else if (score2 > score1) System.out.println("\nCongratulations " + player2.getName() + ", you win!");
+        else System.out.println("\nIt's a tie!");
     }
 
     @Override
