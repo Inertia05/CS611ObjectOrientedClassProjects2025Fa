@@ -14,11 +14,14 @@ public class PuzzleGame extends Game {
     public PuzzleGame() {
     }
 
+    // In PuzzleGame.java
+
     @Override
     protected String getGameInfo(Scanner scanner) {
         System.out.println("\n--- Setting up Sliding Puzzle ---");
         System.out.print("Enter your name: ");
-        scanner.nextLine(); // Consume the leftover newline character
+
+        // The extra scanner.nextLine() was here. It has been removed.
         this.player = new Player(scanner.nextLine());
 
         // Get the desired board size from the user
