@@ -3,20 +3,28 @@ import java.util.Scanner;
 public class MainMenu {
     public static void main(String[] args) {
         System.out.println("Welcome to Board Games!");
-        Scanner scanner = new Scanner(System.in); 
-        
+        Scanner scanner = new Scanner(System.in);
+
         Game newGame = null;
         while (true) {
-            int choice = showMenu(scanner); // if this returns, user chose to start a new game
+            int choice = showMenu(scanner);
+
+            // If the choice was invalid, show the menu again
+            if (choice == -1) {
+                System.out.println(); // Add a space for readability
+                continue;
+            }
+
             if (choice == 1) {
                 newGame = new PuzzleGame();
             } else if (choice == 2) {
                 newGame = new DotsAndBoxesGame();
             }
+
             String info = newGame.getGameInfo(scanner);
             newGame.initializeBoard();
-            newGame.runGame(scanner);//game loop running in this method
-            // Game have ended here
+            newGame.runGame(scanner); // Game loop runs here
+            System.out.println("\n------------------------------------\n");
         }
     }
 
@@ -27,18 +35,27 @@ public class MainMenu {
         System.out.println("3. Exit");
         System.out.print("Choose an option: ");
 
-        int choice = scanner.nextInt();
-        scanner.nextLine(); // <-- ADD THIS LINE to consume the leftover newline
+        try {
+            // Read the entire line of input as a string
+            String input = scanner.nextLine();
+            // Convert the string to an integer
+            int choice = Integer.parseInt(input);
 
-        if (choice == 3) {
-            System.out.println("Goodbye!");
-            System.exit(0);
+            if (choice == 3) {
+                System.out.println("Goodbye!");
+                System.exit(0);
+            }
+
+            if (choice == 1 || choice == 2) {
+                return choice;
+            } else {
+                System.out.println("Invalid option. Please choose 1, 2, or 3.");
+                return -1; // Return an invalid choice
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter a number.");
+            return -1; // Return an invalid choice
         }
-        if (choice != 1 && choice != 2) {
-            System.out.println("Invalid menu option: " + choice);
-            // It's better to loop than to crash, but this is fine for now.
-        }
-        return choice;
     }
 }
 
