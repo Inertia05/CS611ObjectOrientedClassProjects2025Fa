@@ -34,7 +34,12 @@ public abstract class Board {
         @Override
         public String getBoardAsString() {
             StringBuilder sb = new StringBuilder();
-            String line = "+--".repeat(size) + "+\n";
+            StringBuilder lineBuilder = new StringBuilder();
+            for (int i = 0; i < size; i++) {
+                lineBuilder.append("+--");
+            }
+            lineBuilder.append("+\n");
+            String line = lineBuilder.toString();
             sb.append(line);
             for (int i = 0; i < size; i++) {
                 for (int j = 0; j < size; j++) {
