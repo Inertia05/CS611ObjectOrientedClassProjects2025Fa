@@ -51,23 +51,6 @@ public class PuzzleGame extends Game {
         return "Player and board dimensions are set.";
     }
 
-    // ADDED: A helper method to reduce repeated code for getting dimensions
-    private int promptForDimension(Scanner scanner, String dimensionName) {
-        while (true) {
-            System.out.print("Enter puzzle " + dimensionName + " (height): ");
-            try {
-                int dim = Integer.parseInt(scanner.nextLine());
-                if (dim >= 2 && dim <= 5) {
-                    return dim;
-                } else {
-                    System.out.println("Invalid " + dimensionName + ". Please enter a number between 2 and 5.");
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a number.");
-            }
-        }
-    }
-
     @Override
     protected void initializeBoard() {
         // CHANGED: Pass both width and height to the constructor

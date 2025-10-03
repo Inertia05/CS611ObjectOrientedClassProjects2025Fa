@@ -24,27 +24,31 @@ public class DotsAndBoxesGame extends Game {
 
         // CHANGED: Get grid dimensions from the user
         System.out.println("Enter the dimensions of the dot grid.");
-        this.gridWidth = promptForDimension(scanner, "width");
-        this.gridHeight = promptForDimension(scanner, "height");
-
-        return "Players and board dimensions are set.";
-    }
-
-    // ADDED: A helper method for getting dimensions
-    private int promptForDimension(Scanner scanner, String dimensionName) {
         while (true) {
-            System.out.print("Enter grid " + dimensionName + " (between 2 and 5): ");
+            System.out.print("Enter puzzle width and height (e.g., '4 3'): ");
             try {
-                int dim = Integer.parseInt(scanner.nextLine());
-                if (dim >= 2 && dim <= 5) {
-                    return dim;
+                String[] parts = scanner.nextLine().split(" ");
+                if (parts.length != 2) {
+                    System.out.println("Invalid format. Please enter two numbers separated by a space.");
+                    continue;
+                }
+
+                int width = Integer.parseInt(parts[0]);
+                int height = Integer.parseInt(parts[1]);
+
+                if (width >= 1 && width <= 10 && height >= 1 && height <= 10) {
+                    this.gridWidth = width;
+                    this.gridHeight = height;
+                    break; // Exit the loop if input is valid
                 } else {
-                    System.out.println("Invalid " + dimensionName + ". Please enter a number between 2 and 5.");
+                    System.out.println("Invalid dimensions. Both width and height must be between 1 and 10.");
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a number.");
+                System.out.println("Invalid input. Please enter numbers only.");
             }
         }
+
+        return "Players and board dimensions are set.";
     }
 
     @Override
@@ -53,7 +57,7 @@ public class DotsAndBoxesGame extends Game {
         this.board = new Board.DotsAndBoxesBoard(this.gridWidth, this.gridHeight, player1, player2);
         this.currentPlayer = player1;
         // CHANGED: Updated confirmation message
-        System.out.println("A " + (gridWidth - 1) + "x" + (gridHeight - 1) + " box grid has been created. Let's play!");
+        System.out.println("A " + (gridWidth) + "x" + (gridHeight) + " box grid has been created. Let's play!");
     }
 
     // The rest of the DotsAndBoxesGame class remains the same...
