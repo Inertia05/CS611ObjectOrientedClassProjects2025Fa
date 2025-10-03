@@ -9,9 +9,12 @@ public class MainMenu {
         while (true) {
             int choice = showMenu(scanner); // if this returns, user chose to start a new game
             if (choice == 1) {
-                newGame = new PuzzleGame();
+                newGame = new PuzzleGame();  
             } else if (choice == 2) {
                 newGame = new DotsAndBoxesGame();
+            }
+            if (choice != 1 && choice != 2) {
+                continue;
             }
             String info = newGame.getGameInfo(scanner);
             newGame.initializeBoard();
