@@ -6,17 +6,13 @@ import java.util.Scanner;
  */
 public class PuzzleGame extends Game {
 
-    private Board.PuzzleBoard board;
+    private PuzzleBoard board;
     private Player player;
-    // CHANGED: Replaced boardSize with width and height
     private int boardWidth;
     private int boardHeight;
 
-    // Default constructor
     public PuzzleGame() {
     }
-
-    // In PuzzleGame.java
  
     @Override
     protected String getGameInfo(Scanner scanner) {
@@ -54,7 +50,7 @@ public class PuzzleGame extends Game {
     @Override
     protected void initializeBoard() {
         // CHANGED: Pass both width and height to the constructor
-        this.board = new Board.PuzzleBoard(this.boardWidth, this.boardHeight);
+        this.board = new PuzzleBoard(this.boardWidth, this.boardHeight);
         System.out.println("Okay " + player.getName() + ", here’s your " + boardWidth + "x" + boardHeight + " puzzle:");
     }
 

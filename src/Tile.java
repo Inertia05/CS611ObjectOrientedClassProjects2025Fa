@@ -1,7 +1,3 @@
-**
-        * Represents a single tile in the sliding puzzle.
-        * Each tile has a numerical value. The tile with value 0 is the empty space.
-        */
 public class Tile {
     private final int value;
 

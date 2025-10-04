@@ -6,7 +6,7 @@ import java.util.Random;
  * Represents the board for the sliding puzzle game.
  * This version uses a grid of Tile objects instead of primitive integers.
  */
-public static class PuzzleBoard extends Board {
+public class PuzzleBoard extends Board {
     // CHANGED: The grid now holds Tile objects.
     private final Tile[][] grid;
     private int emptyRow, emptyCol;

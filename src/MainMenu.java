@@ -1,73 +1,45 @@
 import java.util.Scanner;
 
+/**
+ * The main entry point for the application. It displays a menu
+ * and allows the user to choose which game to play.
+ */
 public class MainMenu {
     public static void main(String[] args) {
-        System.out.println("Welcome to Board Games!");
         Scanner scanner = new Scanner(System.in);
+        System.out.println("Welcome to Board Games!");
 
-        Game newGame = null;
         while (true) {
-            int choice = showMenu(scanner);
+            System.out.println("\nMenu:");
+            System.out.println("1. Start sliding puzzle game");
+            System.out.println("2. Start dot and box game");
+            System.out.println("3. Exit");
+            System.out.print("Choose an option: ");
 
-            // If the choice was invalid, show the menu again
-            if (choice == -1) {
-                System.out.println(); // Add a space for readability
-                continue;
+            String choice = scanner.nextLine();
+            Game game = null;
+
+            switch (choice) {
+                case "1":
+                    game = new PuzzleGame();
+                    break;
+                case "2":
+                    game = new DotsAndBoxesGame();
+                    break;
+                case "3":
+                    System.out.println("Goodbye!");
+                    scanner.close();
+                    return; // Exit the program
+                default:
+                    System.out.println("Invalid option. Please try again.");
+                    continue; // Skip the rest of the loop and show the menu again
             }
 
-            if (choice == 1) {
-                newGame = new PuzzleGame();  
-            } else if (choice == 2) {
-                newGame = new DotsAndBoxesGame();
+            // The 'play' method now handles the entire game flow for the selected game.
+            // The MainMenu doesn't need to know the individual steps.
+            if (game != null) {
+                game.play(scanner);
             }
-            if (choice != 1 && choice != 2) {
-                continue;
-            }
-
-            String info = newGame.getGameInfo(scanner);
-            newGame.initializeBoard();
-            newGame.runGame(scanner); // Game loop runs here
-            System.out.println("\n------------------------------------\n");
         }
     }
-
-    private static int showMenu(Scanner scanner) {
-        System.out.println("Menu:");
-        System.out.println("1. Start sliding puzzle game");
-        System.out.println("2. Start dot and box game");
-        System.out.println("3. Exit");
-        System.out.print("Choose an option: ");
-
-        try {
-            // Read the entire line of input as a string
-            String input = scanner.nextLine();
-            // Convert the string to an integer
-            int choice = Integer.parseInt(input);
-
-            if (choice == 3) {
-                System.out.println("Goodbye!");
-                System.exit(0);
-            }
-
-            if (choice == 1 || choice == 2) {
-                return choice;
-            } else {
-                System.out.println("Invalid option. Please choose 1, 2, or 3.");
-                return -1; // Return an invalid choice
-            }
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid input. Please enter a number.");
-            return -1; // Return an invalid choice
-        }
-    }
-}
-
-abstract class Game {
-    protected abstract void initializeBoard();
-    protected abstract void runGame(Scanner scanner);
-    protected abstract String getGameInfo(Scanner scanner);
-    protected abstract boolean isGameOver();
-    protected abstract void printBoard();
-    protected abstract void quitToMainMenu();
-
 }
