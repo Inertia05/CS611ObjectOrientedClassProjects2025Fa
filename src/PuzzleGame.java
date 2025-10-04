@@ -20,7 +20,6 @@ public class PuzzleGame extends Game {
         System.out.print("Enter your name: ");
         this.player = new Player(scanner.nextLine());
 
-        // CHANGED: Prompt for width and height in a single line
         while (true) {
             System.out.print("Enter puzzle width and height (e.g., '4 3'): ");
             try {
