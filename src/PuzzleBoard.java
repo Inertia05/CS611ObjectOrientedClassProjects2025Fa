@@ -100,7 +100,12 @@ public class PuzzleBoard extends Board {
     @Override
     public String getBoardAsString() {
         StringBuilder sb = new StringBuilder();
-        String line = "+" + "--+".repeat(width) + "\n";
+        StringBuilder lineBuilder = new StringBuilder("+");
+        for (int k = 0; k < width; k++) {
+            lineBuilder.append("--+");
+        }
+        lineBuilder.append("\n");
+        String line = lineBuilder.toString();
         sb.append(line);
         for (int i = 0; i < height; i++) {
             sb.append("|");
