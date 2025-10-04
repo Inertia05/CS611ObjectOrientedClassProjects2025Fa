@@ -98,13 +98,13 @@ public class DotsAndBoxesBoard extends Board {
 
             if (r < height - 1) {
                 for (int c = 0; c < width; c++) {
-                    sb.append(isClaimed(r, c, 'V') ? " |" : "   ");
+                    sb.append(isClaimed(r, c, 'V') ? "| " : "  ");
                     if (c < width - 1) {
                         Player owner = boxOwners[r][c];
                         if (owner != null) {
                             sb.append(owner.getName().substring(0, 1).toUpperCase()).append("  ");
                         } else {
-                            sb.append("   ");
+                            sb.append("  ");
                         }
                     }
                 }
