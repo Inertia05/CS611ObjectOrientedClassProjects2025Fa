@@ -6,7 +6,6 @@ public class DotsAndBoxesGame extends Game {
     private Player player1;
     private Player player2;
     private Player currentPlayer;
-    // CHANGED: Added fields for width and height
     private int gridWidth;
     private int gridHeight;
 
