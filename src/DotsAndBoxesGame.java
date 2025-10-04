@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class DotsAndBoxesGame extends Game {
 
-    private Board.DotsAndBoxesBoard board;
+    private DotsAndBoxesBoard board;
     private Player player1;
     private Player player2;
     private Player currentPlayer;
@@ -54,7 +54,7 @@ public class DotsAndBoxesGame extends Game {
     @Override
     protected void initializeBoard() {
         // CHANGED: Pass width and height to the board constructor
-        this.board = new Board.DotsAndBoxesBoard(this.gridWidth, this.gridHeight, player1, player2);
+        this.board = new DotsAndBoxesBoard(this.gridWidth, this.gridHeight, player1, player2);
         this.currentPlayer = player1;
         // CHANGED: Updated confirmation message
         System.out.println("A " + (gridWidth) + "x" + (gridHeight) + " box grid has been created. Let's play!");

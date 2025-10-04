@@ -1,17 +1,47 @@
+**
+        * Represents a single tile in the sliding puzzle.
+        * Each tile has a numerical value. The tile with value 0 is the empty space.
+        */
 public class Tile {
-    private final int x;
-    private final int y;
+    private final int value;
 
-    public Tile(int x, int y) {
-        this.x = x;
-        this.y = y;
+    /**
+     * Constructs a Tile with a specific value.
+     *
+     * @param value The number on the tile.
+     */
+    public Tile(int value) {
+        this.value = value;
     }
 
-    public int getX() {
-        return x;
+    /**
+     * Gets the numerical value of the tile.
+     *
+     * @return The tile's number.
+     */
+    public int getValue() {
+        return value;
     }
 
-    public int getY() {
-        return y;
+    /**
+     * Checks if this tile is the empty space.
+     *
+     * @return true if the tile's value is 0, false otherwise.
+     */
+    public boolean isEmpty() {
+        return this.value == 0;
+    }
+
+    /**
+     * Provides a formatted string representation for the tile.
+     *
+     * @return A two-character string for the tile's value, or spaces for an empty tile.
+     */
+    @Override
+    public String toString() {
+        if (isEmpty()) {
+            return "  ";
+        }
+        return String.format("%2d", this.value);
     }
 }
