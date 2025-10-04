@@ -1,8 +1,9 @@
 import java.util.Scanner;
 
 /**
- * The main class that runs the sliding puzzle game.
- * It extends the abstract Game class to fit into the main menu system.
+ * Orchestrates the gameplay for the sliding puzzle game.
+ * This class handles the player and board setup, runs the main game loop,
+ * processes user input for sliding tiles, and displays a message upon completion.
  */
 public class PuzzleGame extends Game {
 
@@ -13,7 +14,7 @@ public class PuzzleGame extends Game {
 
     public PuzzleGame() {
     }
- 
+
     @Override
     protected String getGameInfo(Scanner scanner) {
         System.out.println("\n--- Setting up Sliding Puzzle ---");
@@ -23,23 +24,23 @@ public class PuzzleGame extends Game {
         while (true) {
             System.out.print("Enter puzzle width and height (e.g., '4 3'): ");
             try {
-                String[] parts = scanner.nextLine().split(" ");
-                if (parts.length != 2) {
+                String[] dimensionParts = scanner.nextLine().split(" ");
+                if (dimensionParts.length != 2) {
                     System.out.println("Invalid format. Please enter two numbers separated by a space.");
                     continue;
                 }
 
-                int width = Integer.parseInt(parts[0]);
-                int height = Integer.parseInt(parts[1]);
+                int desiredWidth = Integer.parseInt(dimensionParts[0]);
+                int desiredHeight = Integer.parseInt(dimensionParts[1]);
 
-                if (width >= 1 && width <= 10 && height >= 1 && height <= 10) {
-                    this.boardWidth = width;
-                    this.boardHeight = height;
+                if (desiredWidth >= 1 && desiredWidth <= 10 && desiredHeight >= 1 && desiredHeight <= 10) {
+                    this.boardWidth = desiredWidth;
+                    this.boardHeight = desiredHeight;
                     break; // Exit the loop if input is valid
                 } else {
-                    System.out.println("Invalid dimensions. Both width and height must be between 5 and 5.");
+                    System.out.println("Invalid dimensions. Both width and height must be between 1 and 10.");
                 }
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException exception) {
                 System.out.println("Invalid input. Please enter numbers only.");
             }
         }
@@ -48,7 +49,6 @@ public class PuzzleGame extends Game {
 
     @Override
     protected void initializeBoard() {
-        // CHANGED: Pass both width and height to the constructor
         this.board = new PuzzleBoard(this.boardWidth, this.boardHeight);
         System.out.println("Okay " + player.getName() + ", here’s your " + boardWidth + "x" + boardHeight + " puzzle:");
     }
@@ -58,19 +58,19 @@ public class PuzzleGame extends Game {
         while (!isGameOver()) {
             printBoard();
             System.out.print(player.getName() + ", which tile do you want to slide? (or type 'quit'): ");
-            String input = scanner.nextLine().trim();
+            String userInput = scanner.nextLine().trim();
 
-            if (input.equalsIgnoreCase("quit")) {
+            if (userInput.equalsIgnoreCase("quit")) {
                 quitToMainMenu();
                 return;
             }
 
             try {
-                int tile = Integer.parseInt(input);
-                if (!board.slideTile(tile)) {
+                int tileValueToSlide = Integer.parseInt(userInput);
+                if (!board.slideTile(tileValueToSlide)) {
                     System.out.println("Invalid move! That tile is not adjacent to the empty space.");
                 }
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException exception) {
                 System.out.println("Invalid input. Please enter a number.");
             }
         }

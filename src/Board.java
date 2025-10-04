@@ -2,6 +2,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Represents the abstract concept of a game board, serving as a blueprint
+ * for specific game board implementations like Dots and Boxes or a sliding puzzle.
+ */
 public abstract class Board {
     /**
      * The width of the game board (number of columns).

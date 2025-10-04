@@ -1,5 +1,10 @@
 import java.util.Scanner;
 
+/**
+ * The main entry point for the board game application.
+ * This class displays a menu to the user, allowing them to select a game
+ * to play or to exit the application. It manages the main program loop.
+ */
 public class MainMenu {
 
     public static void main(String[] args) {
@@ -12,13 +17,13 @@ public class MainMenu {
 
         while (true) {
             showMenu();
-            Game game = selectGame(scanner);
-            if (game == null) {
+            Game selectedGame = selectGame(scanner);
+            if (selectedGame == null) {
                 System.out.println("Goodbye!");
                 scanner.close();
                 break;
             }
-            game.play(scanner);
+            selectedGame.play(scanner);
         }
     }
 
@@ -31,10 +36,14 @@ public class MainMenu {
     }
 
     private Game selectGame(Scanner scanner) {
-        switch (scanner.nextLine()) {
-            case "1": return new PuzzleGame();
-            case "2": return new DotsAndBoxesGame();
-            case "3": return null;
+        String userChoice = scanner.nextLine();
+        switch (userChoice) {
+            case "1":
+                return new PuzzleGame();
+            case "2":
+                return new DotsAndBoxesGame();
+            case "3":
+                return null;
             default:
                 System.out.println("Invalid option. Please try again.");
                 return selectGame(scanner);

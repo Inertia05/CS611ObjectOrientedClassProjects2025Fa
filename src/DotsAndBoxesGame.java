@@ -1,10 +1,15 @@
 import java.util.Scanner;
 
+/**
+ * Orchestrates the gameplay for the Dots and Boxes game.
+ * This class handles player setup, board initialization, the main game loop,
+ * processing user input, and determining the winner.
+ */
 public class DotsAndBoxesGame extends Game {
 
     private DotsAndBoxesBoard board;
-    private Player player1;
-    private Player player2;
+    private Player playerOne;
+    private Player playerTwo;
     private Player currentPlayer;
     private int gridWidth;
     private int gridHeight;
@@ -16,33 +21,32 @@ public class DotsAndBoxesGame extends Game {
     protected String getGameInfo(Scanner scanner) {
         System.out.println("\n--- Setting up Dots and Boxes ---");
         System.out.print("Enter name for Player 1: ");
-        this.player1 = new Player(scanner.nextLine());
+        this.playerOne = new Player(scanner.nextLine());
 
         System.out.print("Enter name for Player 2: ");
-        this.player2 = new Player(scanner.nextLine());
+        this.playerTwo = new Player(scanner.nextLine());
 
-        // CHANGED: Get grid dimensions from the user
         System.out.println("Enter the dimensions of the dot grid.");
         while (true) {
-            System.out.print("Enter puzzle width and height (e.g., '4 3'): ");
+            System.out.print("Enter grid width and height (e.g., '4 3'): ");
             try {
-                String[] parts = scanner.nextLine().split(" ");
-                if (parts.length != 2) {
+                String[] dimensionParts = scanner.nextLine().split(" ");
+                if (dimensionParts.length != 2) {
                     System.out.println("Invalid format. Please enter two numbers separated by a space.");
                     continue;
                 }
 
-                int width = Integer.parseInt(parts[0]);
-                int height = Integer.parseInt(parts[1]);
+                int desiredWidth = Integer.parseInt(dimensionParts[0]);
+                int desiredHeight = Integer.parseInt(dimensionParts[1]);
 
-                if (width >= 1 && width <= 10 && height >= 1 && height <= 10) {
-                    this.gridWidth = width;
-                    this.gridHeight = height;
+                if (desiredWidth >= 1 && desiredWidth <= 10 && desiredHeight >= 1 && desiredHeight <= 10) {
+                    this.gridWidth = desiredWidth;
+                    this.gridHeight = desiredHeight;
                     break; // Exit the loop if input is valid
                 } else {
                     System.out.println("Invalid dimensions. Both width and height must be between 1 and 10.");
                 }
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException exception) {
                 System.out.println("Invalid input. Please enter numbers only.");
             }
         }
@@ -52,65 +56,81 @@ public class DotsAndBoxesGame extends Game {
 
     @Override
     protected void initializeBoard() {
-        // CHANGED: Pass width and height to the board constructor
-        this.board = new DotsAndBoxesBoard(this.gridWidth, this.gridHeight, player1, player2);
-        this.currentPlayer = player1;
-        // CHANGED: Updated confirmation message
-        System.out.println("A " + (gridWidth) + "x" + (gridHeight) + " box grid has been created. Let's play!");
+        this.board = new DotsAndBoxesBoard(this.gridWidth, this.gridHeight, playerOne, playerTwo);
+        this.currentPlayer = playerOne;
+        System.out.println("A " + (gridWidth) + "x" + (gridHeight) + " dot grid has been created. Let's play!");
     }
 
-    // The rest of the DotsAndBoxesGame class remains the same...
     @Override
     protected void runGame(Scanner scanner) {
         while (!isGameOver()) {
             printBoard();
             System.out.println("\nIt's " + currentPlayer.getName() + "'s turn.");
             System.out.print("Enter move (e.g., '0 0 H' or 'quit'): ");
-            String input = scanner.nextLine();
+            String userInput = scanner.nextLine();
 
-            if (input.equalsIgnoreCase("quit")) {
+            if (userInput.equalsIgnoreCase("quit")) {
                 quitToMainMenu();
                 return;
             }
 
             try {
-                String[] parts = input.split(" ");
-                if (parts.length != 3) throw new IllegalArgumentException("Input must have 3 parts.");
-                int row = Integer.parseInt(parts[0]);
-                int col = Integer.parseInt(parts[1]);
-                char direction = parts[2].toUpperCase().charAt(0);
-                if (direction != 'H' && direction != 'V') throw new IllegalArgumentException("Direction must be 'H' or 'V'.");
+                String[] moveParts = userInput.split(" ");
+                if (moveParts.length != 3) throw new IllegalArgumentException("Input must have 3 parts.");
 
-                int boxesCompleted = board.drawLine(row, col, direction, currentPlayer);
+                int rowIndex = Integer.parseInt(moveParts[0]);
+                int columnIndex = Integer.parseInt(moveParts[1]);
+                char direction = moveParts[2].toUpperCase().charAt(0);
+
+                if (direction != 'H' && direction != 'V') {
+                    throw new IllegalArgumentException("Direction must be 'H' or 'V'.");
+                }
+
+                int boxesCompleted = board.drawLine(rowIndex, columnIndex, direction, currentPlayer);
                 if (boxesCompleted == 0) {
                     switchPlayer();
                 } else {
                     System.out.println("You completed " + boxesCompleted + " box(es)! Go again.");
                 }
-            } catch (Exception e) {
-                System.out.println("Invalid move! " + e.getMessage() + " Please try again.");
+            } catch (Exception exception) {
+                System.out.println("Invalid move! " + exception.getMessage() + " Please try again.");
             }
         }
 
         System.out.println("\n--- Game Over! ---");
         printBoard();
-        int score1 = board.getScore(player1);
-        int score2 = board.getScore(player2);
+        int playerOneScore = board.getScore(playerOne);
+        int playerTwoScore = board.getScore(playerTwo);
+
         System.out.println("\n--- Final Score ---");
-        System.out.println(player1.getName() + ": " + score1);
-        System.out.println(player2.getName() + ": " + score2);
-        if (score1 > score2) System.out.println("\nCongratulations " + player1.getName() + ", you win!");
-        else if (score2 > score1) System.out.println("\nCongratulations " + player2.getName() + ", you win!");
-        else System.out.println("\nIt's a tie!");
+        System.out.println(playerOne.getName() + ": " + playerOneScore);
+        System.out.println(playerTwo.getName() + ": " + playerTwoScore);
+
+        if (playerOneScore > playerTwoScore) {
+            System.out.println("\nCongratulations " + playerOne.getName() + ", you win!");
+        } else if (playerTwoScore > playerOneScore) {
+            System.out.println("\nCongratulations " + playerTwo.getName() + ", you win!");
+        } else {
+            System.out.println("\nIt's a tie!");
+        }
     }
 
     @Override
-    protected boolean isGameOver() { return board.isGameOver(); }
+    protected boolean isGameOver() {
+        return board.isGameOver();
+    }
+
     @Override
-    protected void printBoard() { System.out.println(board.getBoardAsString()); }
+    protected void printBoard() {
+        System.out.println(board.getBoardAsString());
+    }
+
     @Override
-    protected void quitToMainMenu() { System.out.println("\nReturning to the main menu..."); }
+    protected void quitToMainMenu() {
+        System.out.println("\nReturning to the main menu...");
+    }
+
     private void switchPlayer() {
-        currentPlayer = (currentPlayer.equals(player1)) ? player2 : player1;
+        currentPlayer = (currentPlayer.equals(playerOne)) ? playerTwo : playerOne;
     }
 }

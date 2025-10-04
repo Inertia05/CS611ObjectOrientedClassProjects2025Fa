@@ -1,3 +1,8 @@
+/**
+ * Models a single tile within the sliding puzzle game.
+ * Each tile holds a numerical value, with a value of 0 representing the empty space.
+ * This class is designed to be immutable.
+ */
 public class Tile {
     private final int value;
 

@@ -2,9 +2,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Manages the state and logic for a sliding puzzle game board.
+ * This class handles the initialization of the grid, shuffling the tiles,
+ * processing player moves, and checking for the solved state.
+ */
 public class PuzzleBoard extends Board {
     private final int[][] grid;
-    private int emptyRow, emptyCol;
+    private int emptySpaceRowIndex;
+    private int emptySpaceColumnIndex;
     private final Random random = new Random();
 
     public PuzzleBoard(int width, int height) {
@@ -13,78 +19,109 @@ public class PuzzleBoard extends Board {
             throw new IllegalArgumentException("Board dimensions must be between 2x2 and 10x10.");
         }
         this.grid = new int[height][width];
-        initBoard();
+        initializeBoard();
         shuffleBoard();
     }
 
-    private void initBoard() {
-        int value = 1;
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                grid[i][j] = value++;
+    /**
+     * Sets up the board in its initial, solved state with tiles in ascending order
+     * and the empty space (represented by 0) in the bottom-right corner.
+     */
+    private void initializeBoard() {
+        int currentTileValue = 1;
+        for (int rowIndex = 0; rowIndex < height; rowIndex++) {
+            for (int columnIndex = 0; columnIndex < width; columnIndex++) {
+                grid[rowIndex][columnIndex] = currentTileValue++;
             }
         }
+        // Place the empty space at the end
         grid[height - 1][width - 1] = 0;
-        emptyRow = height - 1;
-        emptyCol = width - 1;
+        this.emptySpaceRowIndex = height - 1;
+        this.emptySpaceColumnIndex = width - 1;
     }
 
+    /**
+     * Randomizes the board by making a large number of valid moves.
+     */
     private void shuffleBoard() {
-        for (int i = 0; i < width * height * 20; i++) {
-            List<int[]> moves = getValidMoves();
-            int[] move = moves.get(random.nextInt(moves.size()));
-            slide(move[0], move[1]);
+        int shuffleMoves = width * height * 20;
+        for (int i = 0; i < shuffleMoves; i++) {
+            List<int[]> possibleMoves = getValidMoves();
+            int[] selectedMove = possibleMoves.get(random.nextInt(possibleMoves.size()));
+            performSlide(selectedMove[0], selectedMove[1]);
         }
     }
 
+    /**
+     * Calculates the possible moves based on the current position of the empty space.
+     * @return A list of valid coordinates [row, column] that can be slid into the empty space.
+     */
     private List<int[]> getValidMoves() {
-        List<int[]> moves = new ArrayList<>();
-        if (emptyRow > 0) moves.add(new int[]{emptyRow - 1, emptyCol});
-        if (emptyRow < height - 1) moves.add(new int[]{emptyRow + 1, emptyCol});
-        if (emptyCol > 0) moves.add(new int[]{emptyRow, emptyCol - 1});
-        if (emptyCol < width - 1) moves.add(new int[]{emptyRow, emptyCol + 1});
-        return moves;
+        List<int[]> validMovesList = new ArrayList<>();
+        if (emptySpaceRowIndex > 0) validMovesList.add(new int[]{emptySpaceRowIndex - 1, emptySpaceColumnIndex});
+        if (emptySpaceRowIndex < height - 1) validMovesList.add(new int[]{emptySpaceRowIndex + 1, emptySpaceColumnIndex});
+        if (emptySpaceColumnIndex > 0) validMovesList.add(new int[]{emptySpaceRowIndex, emptySpaceColumnIndex - 1});
+        if (emptySpaceColumnIndex < width - 1) validMovesList.add(new int[]{emptySpaceRowIndex, emptySpaceColumnIndex + 1});
+        return validMovesList;
     }
 
-    public boolean slideTile(int tile) {
-        if (tile <= 0 || tile >= width * height) return false;
+    /**
+     * Attempts to slide a given tile into the empty space.
+     * @param tileValue The number on the tile the user wants to move.
+     * @return true if the move was valid and performed, false otherwise.
+     */
+    public boolean slideTile(int tileValue) {
+        if (tileValue <= 0 || tileValue >= width * height) return false;
 
-        int tileRow = -1, tileCol = -1;
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                if (grid[i][j] == tile) {
-                    tileRow = i;
-                    tileCol = j;
+        int tileRowIndex = -1, tileColumnIndex = -1;
+        // Find the location of the requested tile
+        for (int rowIndex = 0; rowIndex < height; rowIndex++) {
+            for (int columnIndex = 0; columnIndex < width; columnIndex++) {
+                if (grid[rowIndex][columnIndex] == tileValue) {
+                    tileRowIndex = rowIndex;
+                    tileColumnIndex = columnIndex;
                     break;
                 }
             }
         }
 
-        if (tileRow == -1) return false;
+        if (tileRowIndex == -1) return false; // Tile not found
 
-        // Check if adjacent to empty space
-        if (Math.abs(tileRow - emptyRow) + Math.abs(tileCol - emptyCol) == 1) {
-            slide(tileRow, tileCol);
+        // Check if the found tile is adjacent to the empty space
+        boolean isAdjacent = Math.abs(tileRowIndex - emptySpaceRowIndex) + Math.abs(tileColumnIndex - emptySpaceColumnIndex) == 1;
+        if (isAdjacent) {
+            performSlide(tileRowIndex, tileColumnIndex);
             return true;
         }
         return false;
     }
 
-    private void slide(int row, int col) {
-        grid[emptyRow][emptyCol] = grid[row][col];
-        grid[row][col] = 0;
-        emptyRow = row;
-        emptyCol = col;
+    /**
+     * Swaps the tile at the given coordinates with the empty space.
+     * @param sourceRow The row of the tile to slide.
+     * @param sourceColumn The column of the tile to slide.
+     */
+    private void performSlide(int sourceRow, int sourceColumn) {
+        grid[emptySpaceRowIndex][emptySpaceColumnIndex] = grid[sourceRow][sourceColumn];
+        grid[sourceRow][sourceColumn] = 0;
+        emptySpaceRowIndex = sourceRow;
+        emptySpaceColumnIndex = sourceColumn;
     }
 
+    /**
+     * Checks if the board is in the solved configuration.
+     * @return true if all tiles are in ascending order, false otherwise.
+     */
     public boolean isSolved() {
-        int value = 1;
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                if (i == height - 1 && j == width - 1) {
-                    return grid[i][j] == 0;
+        int expectedTileValue = 1;
+        for (int rowIndex = 0; rowIndex < height; rowIndex++) {
+            for (int columnIndex = 0; columnIndex < width; columnIndex++) {
+                // For the last cell, check if it's the empty space
+                if (rowIndex == height - 1 && columnIndex == width - 1) {
+                    return grid[rowIndex][columnIndex] == 0;
                 }
-                if (grid[i][j] != value++) {
+                // For all other cells, check if they hold the correct number
+                if (grid[rowIndex][columnIndex] != expectedTileValue++) {
                     return false;
                 }
             }
@@ -99,26 +136,28 @@ public class PuzzleBoard extends Board {
 
     @Override
     public String getBoardAsString() {
-        StringBuilder sb = new StringBuilder();
-        StringBuilder lineBuilder = new StringBuilder("+");
-        for (int k = 0; k < width; k++) {
-            lineBuilder.append("--+");
+        StringBuilder boardBuilder = new StringBuilder();
+        StringBuilder borderBuilder = new StringBuilder("+");
+        for (int i = 0; i < width; i++) {
+            borderBuilder.append("--+");
         }
-        lineBuilder.append("\n");
-        String line = lineBuilder.toString();
-        sb.append(line);
-        for (int i = 0; i < height; i++) {
-            sb.append("|");
-            for (int j = 0; j < width; j++) {
-                if (grid[i][j] == 0) {
-                    sb.append("  |");
+        borderBuilder.append("\n");
+        String horizontalBorder = borderBuilder.toString();
+
+        boardBuilder.append(horizontalBorder);
+        for (int rowIndex = 0; rowIndex < height; rowIndex++) {
+            boardBuilder.append("|");
+            for (int columnIndex = 0; columnIndex < width; columnIndex++) {
+                int tileValue = grid[rowIndex][columnIndex];
+                if (tileValue == 0) {
+                    boardBuilder.append("  |");
                 } else {
-                    sb.append(String.format("%2d|", grid[i][j]));
+                    boardBuilder.append(String.format("%2d|", tileValue));
                 }
             }
-            sb.append("\n");
-            sb.append(line);
+            boardBuilder.append("\n");
+            boardBuilder.append(horizontalBorder);
         }
-        return sb.toString();
+        return boardBuilder.toString();
     }
 }

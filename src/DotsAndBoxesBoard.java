@@ -1,11 +1,18 @@
 import java.util.*;
 
+/**
+ * Manages the state and logic of the Dots and Boxes game board.
+ * This class tracks all drawn lines, box ownership, and player scores,
+ * and provides the functionality to play the game and render the board.
+ */
 public class DotsAndBoxesBoard extends Board {
 
-    private final List<Piece> lines;   // all horizontal + vertical pieces
+    private final List<Piece> lines;
     private final Player[][] boxOwners;
-    private final Player p1, p2;
-    private int player1Score, player2Score;
+    private final Player playerOne;
+    private final Player playerTwo;
+    private int playerOneScore;
+    private int playerTwoScore;
 
     public DotsAndBoxesBoard(int width, int height, Player player1, Player player2) {
         super(width, height);
@@ -15,41 +22,41 @@ public class DotsAndBoxesBoard extends Board {
 
         this.lines = new ArrayList<>();
         this.boxOwners = new Player[height - 1][width - 1];
-        this.p1 = player1;
-        this.p2 = player2;
-        this.player1Score = 0;
-        this.player2Score = 0;
+        this.playerOne = player1;
+        this.playerTwo = player2;
+        this.playerOneScore = 0;
+        this.playerTwoScore = 0;
 
         // Create all horizontal pieces
-        for (int r = 0; r < height; r++) {
-            for (int c = 0; c < width - 1; c++) {
-                lines.add(new Piece(r, c, 'H'));
+        for (int rowIndex = 0; rowIndex < height; rowIndex++) {
+            for (int columnIndex = 0; columnIndex < width - 1; columnIndex++) {
+                lines.add(new Piece(rowIndex, columnIndex, 'H'));
             }
         }
 
         // Create all vertical pieces
-        for (int r = 0; r < height - 1; r++) {
-            for (int c = 0; c < width; c++) {
-                lines.add(new Piece(r, c, 'V'));
+        for (int rowIndex = 0; rowIndex < height - 1; rowIndex++) {
+            for (int columnIndex = 0; columnIndex < width; columnIndex++) {
+                lines.add(new Piece(rowIndex, columnIndex, 'V'));
             }
         }
     }
 
     public int getScore(Player player) {
-        return player.equals(p1) ? player1Score : player2Score;
+        return player.equals(playerOne) ? playerOneScore : playerTwoScore;
     }
 
-    public int drawLine(int r, int c, char direction, Player currentPlayer) {
-        Piece piece = findPiece(r, c, direction);
+    public int drawLine(int rowIndex, int columnIndex, char direction, Player currentPlayer) {
+        Piece piece = findPiece(rowIndex, columnIndex, direction);
         if (piece == null) throw new IllegalArgumentException("Line out of bounds.");
         if (!piece.claim(currentPlayer)) throw new IllegalArgumentException("Line already taken.");
         return checkForCompletedBoxes(currentPlayer);
     }
 
-    private Piece findPiece(int r, int c, char direction) {
-        for (Piece p : lines) {
-            if (p.getRow() == r && p.getCol() == c && p.getDirection() == direction) {
-                return p;
+    private Piece findPiece(int rowIndex, int columnIndex, char direction) {
+        for (Piece piece : lines) {
+            if (piece.getRow() == rowIndex && piece.getCol() == columnIndex && piece.getDirection() == direction) {
+                return piece;
             }
         }
         return null;
@@ -57,16 +64,17 @@ public class DotsAndBoxesBoard extends Board {
 
     private int checkForCompletedBoxes(Player currentPlayer) {
         int boxesCompleted = 0;
-        for (int r = 0; r < height - 1; r++) {
-            for (int c = 0; c < width - 1; c++) {
-                if (boxOwners[r][c] == null &&
-                        isClaimed(r, c, 'H') &&
-                        isClaimed(r + 1, c, 'H') &&
-                        isClaimed(r, c, 'V') &&
-                        isClaimed(r, c + 1, 'V')) {
-                    boxOwners[r][c] = currentPlayer;
-                    if (currentPlayer.equals(p1)) player1Score++;
-                    else player2Score++;
+        // Here, we iterate over the grid of potential boxes
+        for (int boxRowIndex = 0; boxRowIndex < height - 1; boxRowIndex++) {
+            for (int boxColumnIndex = 0; boxColumnIndex < width - 1; boxColumnIndex++) {
+                if (boxOwners[boxRowIndex][boxColumnIndex] == null &&
+                        isClaimed(boxRowIndex, boxColumnIndex, 'H') &&        // Top line
+                        isClaimed(boxRowIndex + 1, boxColumnIndex, 'H') &&  // Bottom line
+                        isClaimed(boxRowIndex, boxColumnIndex, 'V') &&        // Left line
+                        isClaimed(boxRowIndex, boxColumnIndex + 1, 'V')) {  // Right line
+                    boxOwners[boxRowIndex][boxColumnIndex] = currentPlayer;
+                    if (currentPlayer.equals(playerOne)) playerOneScore++;
+                    else playerTwoScore++;
                     boxesCompleted++;
                 }
             }
@@ -74,9 +82,9 @@ public class DotsAndBoxesBoard extends Board {
         return boxesCompleted;
     }
 
-    private boolean isClaimed(int r, int c, char dir) {
-        Piece p = findPiece(r, c, dir);
-        return p != null && p.isClaimed();
+    private boolean isClaimed(int rowIndex, int columnIndex, char direction) {
+        Piece piece = findPiece(rowIndex, columnIndex, direction);
+        return piece != null && piece.isClaimed();
     }
 
     @Override
@@ -86,32 +94,32 @@ public class DotsAndBoxesBoard extends Board {
 
     @Override
     public String getBoardAsString() {
-        StringBuilder sb = new StringBuilder();
-        for (int r = 0; r < height; r++) {
-            for (int c = 0; c < width; c++) {
-                sb.append("●");
-                if (c < width - 1) {
-                    sb.append(isClaimed(r, c, 'H') ? "---" : "   ");
+        StringBuilder boardString = new StringBuilder();
+        for (int rowIndex = 0; rowIndex < height; rowIndex++) {
+            for (int columnIndex = 0; columnIndex < width; columnIndex++) {
+                boardString.append("●");
+                if (columnIndex < width - 1) {
+                    boardString.append(isClaimed(rowIndex, columnIndex, 'H') ? "---" : "   ");
                 }
             }
-            sb.append("\n");
+            boardString.append("\n");
 
-            if (r < height - 1) {
-                for (int c = 0; c < width; c++) {
-                    sb.append(isClaimed(r, c, 'V') ? "| " : "  ");
+            if (rowIndex < height - 1) {
+                for (int columnIndex = 0; columnIndex < width; columnIndex++) {
+                    boardString.append(isClaimed(rowIndex, columnIndex, 'V') ? "| " : "  ");
 
-                    if (c < width - 1) {
-                        Player owner = boxOwners[r][c];
+                    if (columnIndex < width - 1) {
+                        Player owner = boxOwners[rowIndex][columnIndex];
                         if (owner != null) {
-                            sb.append(owner.getName().substring(0, 1).toUpperCase()).append(" ");
+                            boardString.append(owner.getName().substring(0, 1).toUpperCase()).append(" ");
                         } else {
-                            sb.append("  ");
+                            boardString.append("  ");
                         }
                     }
                 }
-                sb.append("\n");
+                boardString.append("\n");
             }
         }
-        return sb.toString();
+        return boardString.toString();
     }
 }
