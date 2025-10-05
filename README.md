@@ -112,7 +112,7 @@ Please give us a full execution of what we should see on the screen. Label each 
         .   .   .   .   .   .
 
 
-        It's P1's turn.
+        It's team 1(P1)'s turn.
         Enter move (e.g., '0 0 H' or 'quit'):
 
     Input:
@@ -132,7 +132,7 @@ Please give us a full execution of what we should see on the screen. Label each 
         .   .   .   .   .   .
 
 
-        It's P2's turn.
+        It's team 2(P2)'s turn.
         Enter move (e.g., '0 0 H' or 'quit'):
 
     Input:
@@ -152,7 +152,7 @@ Please give us a full execution of what we should see on the screen. Label each 
         .   .   .   .   .   .
 
 
-        It's P1's turn.
+        It's team 1(P1)'s turn.
         Enter move (e.g., '0 0 H' or 'quit'):
 
     Input:
@@ -172,7 +172,7 @@ Please give us a full execution of what we should see on the screen. Label each 
         .   .   .   .   .   .
 
 
-        It's P2's turn.
+        It's team 2(P2)'s turn.
         Enter move (e.g., '0 0 H' or 'quit'):
 
     Input:
@@ -184,13 +184,13 @@ Please give us a full execution of what we should see on the screen. Label each 
         .   .   .   .   .   .
 
         .   .   .   .---.   .
-                    | P |
+                    | 2 |
         .   .   .   .---.   .
 
         .   .   .   .   .   .
 
 
-        It's P2's turn.
+        It's team 2(P2)'s turn.
         Enter move (e.g., '0 0 H' or 'quit'):
 
     Input:
