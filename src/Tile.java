@@ -17,7 +17,6 @@ public class Tile {
 
     /**
      * Gets the numerical value of the tile.
-     *
      * @return The tile's number.
      */
     public int getValue() {
