@@ -97,7 +97,7 @@ public class DotsAndBoxesBoard extends Board {
         StringBuilder boardString = new StringBuilder();
         for (int rowIndex = 0; rowIndex < height; rowIndex++) {
             for (int columnIndex = 0; columnIndex < width; columnIndex++) {
-                boardString.append("●");
+                boardString.append(".");
                 if (columnIndex < width - 1) {
                     boardString.append(isClaimed(rowIndex, columnIndex, 'H') ? "---" : "   ");
                 }
