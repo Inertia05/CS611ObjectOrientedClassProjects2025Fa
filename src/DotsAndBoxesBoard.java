@@ -111,7 +111,7 @@ public class DotsAndBoxesBoard extends Board {
                     if (columnIndex < width - 1) {
                         Player owner = boxOwners[rowIndex][columnIndex];
                         if (owner != null) {
-                            boardString.append(owner.getName().substring(0, 1).toUpperCase()).append(" ");
+                            boardString.append(owner.getTeam()).append(" ");
                         } else {
                             boardString.append("  ");
                         }

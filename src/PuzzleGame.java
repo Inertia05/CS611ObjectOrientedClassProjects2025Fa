@@ -19,7 +19,7 @@ public class PuzzleGame extends Game {
     protected String getGameInfo(Scanner scanner) {
         System.out.println("\n--- Setting up Sliding Puzzle ---");
         System.out.print("Enter your name: ");
-        this.player = new Player(scanner.nextLine());
+        this.player = new Player(scanner.nextLine(), 0);
 
         while (true) {
             System.out.print("Enter puzzle width and height (e.g., '4 3'): ");

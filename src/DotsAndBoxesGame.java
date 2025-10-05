@@ -21,10 +21,10 @@ public class DotsAndBoxesGame extends Game {
     protected String getGameInfo(Scanner scanner) {
         System.out.println("\n--- Setting up Dots and Boxes ---");
         System.out.print("Enter name for Player 1: ");
-        this.playerOne = new Player(scanner.nextLine());
+        this.playerOne = new Player(scanner.nextLine(), 1);
 
         System.out.print("Enter name for Player 2: ");
-        this.playerTwo = new Player(scanner.nextLine());
+        this.playerTwo = new Player(scanner.nextLine(), 2);
 
         System.out.println("Enter the dimensions of the dot grid.");
         while (true) {
@@ -65,7 +65,8 @@ public class DotsAndBoxesGame extends Game {
     protected void runGame(Scanner scanner) {
         while (!isGameOver()) {
             printBoard();
-            System.out.println("\nIt's " + currentPlayer.getName() + "'s turn.");
+            System.out.println("\nIt's team " + currentPlayer.getTeam() + 
+            " (" + currentPlayer.getName() + ")'s turn.");
             System.out.print("Enter move (e.g., '0 0 H' or 'quit'): ");
             String userInput = scanner.nextLine();
 

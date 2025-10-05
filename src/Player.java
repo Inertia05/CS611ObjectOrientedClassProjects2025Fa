@@ -5,14 +5,16 @@
  * and has its whitespace normalized (e.g., multiple spaces are reduced to one).
  */
 public class Player {
-    private final String name;
+    private String name;
+    private int team = 0;
 
-    public Player(String inputName) {
+    public Player(String inputName, int team) {
         if (inputName == null || inputName.trim().isEmpty()) {
             throw new IllegalArgumentException("Player name cannot be empty.");
         }
 
         String trimmedName = inputName.trim();
+
 
         // The regex ensures the name contains only allowed characters.
         if (!trimmedName.matches("[a-zA-Z0-9 ]+")) {
@@ -22,9 +24,14 @@ public class Player {
         // Replaces multiple whitespace characters with a single space for consistency.
         String normalizedName = trimmedName.replaceAll("\\s+", " ");
         this.name = normalizedName;
+        this.team = team;
     }
 
     public String getName() {
         return name;
+    }
+
+    public int getTeam() {
+        return team;
     }
 }
