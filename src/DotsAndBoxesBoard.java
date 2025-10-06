@@ -27,14 +27,11 @@ public class DotsAndBoxesBoard extends Board {
         this.playerOneScore = 0;
         this.playerTwoScore = 0;
 
-        // Create all horizontal pieces
         for (int rowIndex = 0; rowIndex < height; rowIndex++) {
             for (int columnIndex = 0; columnIndex < width - 1; columnIndex++) {
                 lines.add(new Piece(rowIndex, columnIndex, 'H'));
             }
         }
-
-        // Create all vertical pieces
         for (int rowIndex = 0; rowIndex < height - 1; rowIndex++) {
             for (int columnIndex = 0; columnIndex < width; columnIndex++) {
                 lines.add(new Piece(rowIndex, columnIndex, 'V'));
@@ -64,14 +61,13 @@ public class DotsAndBoxesBoard extends Board {
 
     private int checkForCompletedBoxes(Player currentPlayer) {
         int boxesCompleted = 0;
-        // Here, we iterate over the grid of potential boxes
         for (int boxRowIndex = 0; boxRowIndex < height - 1; boxRowIndex++) {
             for (int boxColumnIndex = 0; boxColumnIndex < width - 1; boxColumnIndex++) {
                 if (boxOwners[boxRowIndex][boxColumnIndex] == null &&
-                        isClaimed(boxRowIndex, boxColumnIndex, 'H') &&        // Top line
-                        isClaimed(boxRowIndex + 1, boxColumnIndex, 'H') &&  // Bottom line
-                        isClaimed(boxRowIndex, boxColumnIndex, 'V') &&        // Left line
-                        isClaimed(boxRowIndex, boxColumnIndex + 1, 'V')) {  // Right line
+                        isClaimed(boxRowIndex, boxColumnIndex, 'H') &&
+                        isClaimed(boxRowIndex + 1, boxColumnIndex, 'H') &&
+                        isClaimed(boxRowIndex, boxColumnIndex, 'V') &&
+                        isClaimed(boxRowIndex, boxColumnIndex + 1, 'V')) {
                     boxOwners[boxRowIndex][boxColumnIndex] = currentPlayer;
                     if (currentPlayer.equals(playerOne)) playerOneScore++;
                     else playerTwoScore++;
@@ -111,7 +107,7 @@ public class DotsAndBoxesBoard extends Board {
                     if (columnIndex < width - 1) {
                         Player owner = boxOwners[rowIndex][columnIndex];
                         if (owner != null) {
-                            boardString.append(owner.getTeam()).append(" ");
+                            boardString.append(String.format("%-2s", owner.getTeamId()));
                         } else {
                             boardString.append("  ");
                         }

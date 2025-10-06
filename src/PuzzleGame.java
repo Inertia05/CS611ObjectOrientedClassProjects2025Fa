@@ -19,7 +19,8 @@ public class PuzzleGame extends Game {
     protected String getGameInfo(Scanner scanner) {
         System.out.println("\n--- Setting up Sliding Puzzle ---");
         System.out.print("Enter your name: ");
-        this.player = new Player(scanner.nextLine());
+        // This is the corrected line:
+        this.player = new Player(scanner.nextLine(), 1); // Default to Team 1
 
         while (true) {
             System.out.print("Enter puzzle width and height (e.g., '4 3'): ");
@@ -36,7 +37,7 @@ public class PuzzleGame extends Game {
                 if (desiredWidth >= 1 && desiredWidth <= 10 && desiredHeight >= 1 && desiredHeight <= 10) {
                     this.boardWidth = desiredWidth;
                     this.boardHeight = desiredHeight;
-                    break; // Exit the loop if input is valid
+                    break;
                 } else {
                     System.out.println("Invalid dimensions. Both width and height must be between 1 and 10.");
                 }
