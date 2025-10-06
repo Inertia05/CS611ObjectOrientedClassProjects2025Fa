@@ -19,7 +19,7 @@ public class PuzzleGame extends Game {
     protected String getGameInfo(Scanner scanner) {
         System.out.println("\n--- Setting up Sliding Puzzle ---");
         System.out.print("Enter your name: ");
-        this.player = new Player(scanner.nextLine(), 0);
+        this.player = new Player(scanner.nextLine());
 
         while (true) {
             System.out.print("Enter puzzle width and height (e.g., '4 3'): ");
@@ -50,7 +50,7 @@ public class PuzzleGame extends Game {
     @Override
     protected void initializeBoard() {
         this.board = new PuzzleBoard(this.boardWidth, this.boardHeight);
-        System.out.println("Okay " + player.getName() + ", here’s your " + boardWidth + "x" + boardHeight + " puzzle:");
+        System.out.println("Okay " + player.getName() + ", here's your " + boardWidth + "x" + boardHeight + " puzzle:");
     }
 
     @Override
