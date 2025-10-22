@@ -31,7 +31,8 @@ public class MainMenu {
         System.out.println("\nMenu:");
         System.out.println("1. Start sliding puzzle game");
         System.out.println("2. Start dot and box game");
-        System.out.println("3. Exit");
+        System.out.println("3. Start Quoridor game"); // 
+        System.out.println("4. Exit"); // 
         System.out.print("Choose an option: ");
     }
 
@@ -42,8 +43,9 @@ public class MainMenu {
                 return new PuzzleGame();
             case "2":
                 return new DotsAndBoxesGame();
-            case "3":
-                return null;
+            case "3": // <-- ADDED
+                return new QuoridorGame();
+            case "4": // 
             default:
                 System.out.println("Invalid option. Please try again.");
                 return selectGame(scanner);
