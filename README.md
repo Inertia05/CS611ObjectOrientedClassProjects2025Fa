@@ -4,7 +4,7 @@
 
 
 
-# CS611-Assignment < 2 >
+# CS611-Assignment < 3 >
 ## < Dots and Boxes Game >
 ---------------------------------------------------------------------------
 - Name1: placeholder
@@ -25,11 +25,15 @@ DotsAndBoxesBoard.java - A subclass of Board that implements specific functional
 
 PuzzleBoard.java - A subclass of Board that implements specific functionalities for the sliding puzzle game.
 
+QuoridorBoard.java - A subclass of Board that implements specific functionalities for Quoridor.
+
 Game.java - This class manages the overall game loop.
 
 DotsAndBoxesGame.java - A subclass of Game that implements the game logic for Dots and Boxes.
 
 PuzzleGame.java - A subclass of Game that implements the game logic for the sliding puzzle.
+
+QuoridorGame.java - A subclass of Game that implements the game logic for Quoridor.
 
 MainMenu.java - This class provides the main menu interface for selecting between different games.
 

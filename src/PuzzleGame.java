@@ -34,7 +34,7 @@ public class PuzzleGame extends Game {
                 int desiredWidth = Integer.parseInt(dimensionParts[0]);
                 int desiredHeight = Integer.parseInt(dimensionParts[1]);
 
-                if (desiredWidth >= 1 && desiredWidth <= 10 && desiredHeight >= 1 && desiredHeight <= 10) {
+                if (desiredWidth >= 2 && desiredWidth <= 10 && desiredHeight >= 2 && desiredHeight <= 10) {
                     this.boardWidth = desiredWidth;
                     this.boardHeight = desiredHeight;
                     break;
