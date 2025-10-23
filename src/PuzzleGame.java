@@ -55,14 +55,14 @@ public class PuzzleGame extends Game {
     }
 
     @Override
-    protected void runGame(Scanner scanner) {
+    protected void runGame(Scanner scanner, GameStats gameStats) {
         while (!isGameOver()) {
             printBoard();
             System.out.print(player.getName() + ", which tile do you want to slide? (or type 'quit'): ");
             String userInput = scanner.nextLine().trim();
 
             if (userInput.equalsIgnoreCase("quit")) {
-                quitToMainMenu();
+                quitToMainMenu(gameStats);
                 return;
             }
 
@@ -78,6 +78,7 @@ public class PuzzleGame extends Game {
 
         printBoard();
         System.out.println("Congratulations, " + player.getName() + "! You solved the puzzle!");
+        gameStats.recordWin(player.getName(), "Puzzle");
     }
 
     @Override
@@ -91,7 +92,8 @@ public class PuzzleGame extends Game {
     }
 
     @Override
-    protected void quitToMainMenu() {
+    protected void quitToMainMenu(GameStats gameStats) {
         System.out.println("Returning to the main menu...");
+        gameStats.recordQuit(player.getName(), "Puzzle");
     }
 }

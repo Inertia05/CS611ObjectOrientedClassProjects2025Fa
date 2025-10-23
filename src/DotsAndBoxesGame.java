@@ -60,7 +60,7 @@ public class DotsAndBoxesGame extends Game {
     }
 
     @Override
-    protected void runGame(Scanner scanner) {
+    protected void runGame(Scanner scanner, GameStats gameStats) {
         while (!isGameOver()) {
             printBoard();
             System.out.println("\nIt's team " + currentPlayer.getTeamId() +
@@ -69,7 +69,7 @@ public class DotsAndBoxesGame extends Game {
             String userInput = scanner.nextLine();
 
             if (userInput.equalsIgnoreCase("quit")) {
-                quitToMainMenu();
+                quitToMainMenu(gameStats);
                 return;
             }
 
@@ -104,10 +104,15 @@ public class DotsAndBoxesGame extends Game {
 
         if (playerOneScore > playerTwoScore) {
             System.out.println("\nCongratulations " + playerOne.getName() + ", you win!");
+            gameStats.recordWin(playerOne.getName(), "Dots and Boxes");
+            gameStats.recordLoss(playerTwo.getName(), "Dots and Boxes");
         } else if (playerTwoScore > playerOneScore) {
             System.out.println("\nCongratulations " + playerTwo.getName() + ", you win!");
+            gameStats.recordWin(playerTwo.getName(), "Dots and Boxes");
+            gameStats.recordLoss(playerOne.getName(), "Dots and Boxes");
         } else {
             System.out.println("\nIt's a tie!");
+            // In case of a tie, we don't record wins or losses
         }
     }
 
@@ -122,8 +127,11 @@ public class DotsAndBoxesGame extends Game {
     }
 
     @Override
-    protected void quitToMainMenu() {
+    protected void quitToMainMenu(GameStats gameStats) {
         System.out.println("\nReturning to the main menu...");
+        // When a player quits, both players get a quit (loss) record
+        gameStats.recordQuit(playerOne.getName(), "Dots and Boxes");
+        gameStats.recordQuit(playerTwo.getName(), "Dots and Boxes");
     }
 
     private void switchPlayer() {

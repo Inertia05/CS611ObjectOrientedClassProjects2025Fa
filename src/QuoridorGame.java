@@ -39,7 +39,7 @@ public class QuoridorGame extends Game {
     }
 
     @Override
-    protected void runGame(Scanner scanner) {
+    protected void runGame(Scanner scanner, GameStats gameStats) {
         while (!isGameOver()) {
             printBoard();
             System.out.println("\nIt's " + currentPlayer.getName() + "'s turn (Team " + currentPlayer.getTeamId() + ").");
@@ -48,7 +48,7 @@ public class QuoridorGame extends Game {
             String userInput = scanner.nextLine().trim().toLowerCase();
 
             if (userInput.equalsIgnoreCase("quit")) {
-                quitToMainMenu();
+                quitToMainMenu(gameStats);
                 return;
             }
 
@@ -71,6 +71,11 @@ public class QuoridorGame extends Game {
         printBoard();
         // The winner is the *current* player, since the game ends right after their move.
         System.out.println("Congratulations " + currentPlayer.getName() + ", you win!");
+        
+        // Record win/loss
+        gameStats.recordWin(currentPlayer.getName(), "Quoridor");
+        Player loser = (currentPlayer.equals(playerOne)) ? playerTwo : playerOne;
+        gameStats.recordLoss(loser.getName(), "Quoridor");
     }
 
     @Override
@@ -84,8 +89,11 @@ public class QuoridorGame extends Game {
     }
 
     @Override
-    protected void quitToMainMenu() {
+    protected void quitToMainMenu(GameStats gameStats) {
         System.out.println("\nReturning to the main menu...");
+        // When a player quits, both players get a quit (loss) record
+        gameStats.recordQuit(playerOne.getName(), "Quoridor");
+        gameStats.recordQuit(playerTwo.getName(), "Quoridor");
     }
 
     private void switchPlayer() {

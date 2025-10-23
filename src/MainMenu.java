@@ -6,6 +6,11 @@ import java.util.Scanner;
  * to play or to exit the application. It manages the main program loop.
  */
 public class MainMenu {
+    private final GameStats gameStats;
+
+    public MainMenu() {
+        this.gameStats = new GameStats();
+    }
 
     public static void main(String[] args) {
         new MainMenu().run();
@@ -19,11 +24,12 @@ public class MainMenu {
             showMenu();
             Game selectedGame = selectGame(scanner);
             if (selectedGame == null) {
+                gameStats.displayStats();
                 System.out.println("Goodbye!");
                 scanner.close();
                 break;
             }
-            selectedGame.play(scanner);
+            selectedGame.play(scanner, gameStats);
         }
     }
 
