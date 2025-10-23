@@ -8,7 +8,7 @@ import java.util.Random;
  * processing player moves, and checking for the solved state.
  */
 public class PuzzleBoard extends Board {
-    private final int[][] grid;
+    private final Tile[][] grid;
     private int emptySpaceRowIndex;
     private int emptySpaceColumnIndex;
     private final Random random = new Random();
@@ -18,7 +18,7 @@ public class PuzzleBoard extends Board {
         if (width < 2 || width > 10 || height < 2 || height > 10) {
             throw new IllegalArgumentException("Board dimensions must be between 2x2 and 10x10.");
         }
-        this.grid = new int[height][width];
+        this.grid = new Tile[height][width];
         initializeBoard();
         shuffleBoard();
     }
@@ -31,11 +31,11 @@ public class PuzzleBoard extends Board {
         int currentTileValue = 1;
         for (int rowIndex = 0; rowIndex < height; rowIndex++) {
             for (int columnIndex = 0; columnIndex < width; columnIndex++) {
-                grid[rowIndex][columnIndex] = currentTileValue++;
+                grid[rowIndex][columnIndex] = new Tile(currentTileValue++);
             }
         }
         // Place the empty space at the end
-        grid[height - 1][width - 1] = 0;
+        grid[height - 1][width - 1] = new Tile(0);
         this.emptySpaceRowIndex = height - 1;
         this.emptySpaceColumnIndex = width - 1;
     }
@@ -77,7 +77,7 @@ public class PuzzleBoard extends Board {
         // Find the location of the requested tile
         for (int rowIndex = 0; rowIndex < height; rowIndex++) {
             for (int columnIndex = 0; columnIndex < width; columnIndex++) {
-                if (grid[rowIndex][columnIndex] == tileValue) {
+                if (grid[rowIndex][columnIndex].getValue() == tileValue) {
                     tileRowIndex = rowIndex;
                     tileColumnIndex = columnIndex;
                     break;
@@ -103,7 +103,7 @@ public class PuzzleBoard extends Board {
      */
     private void performSlide(int sourceRow, int sourceColumn) {
         grid[emptySpaceRowIndex][emptySpaceColumnIndex] = grid[sourceRow][sourceColumn];
-        grid[sourceRow][sourceColumn] = 0;
+        grid[sourceRow][sourceColumn] = new Tile(0);
         emptySpaceRowIndex = sourceRow;
         emptySpaceColumnIndex = sourceColumn;
     }
@@ -118,10 +118,10 @@ public class PuzzleBoard extends Board {
             for (int columnIndex = 0; columnIndex < width; columnIndex++) {
                 // For the last cell, check if it's the empty space
                 if (rowIndex == height - 1 && columnIndex == width - 1) {
-                    return grid[rowIndex][columnIndex] == 0;
+                    return grid[rowIndex][columnIndex].isEmpty();
                 }
                 // For all other cells, check if they hold the correct number
-                if (grid[rowIndex][columnIndex] != expectedTileValue++) {
+                if (grid[rowIndex][columnIndex].getValue() != expectedTileValue++) {
                     return false;
                 }
             }
@@ -148,12 +148,8 @@ public class PuzzleBoard extends Board {
         for (int rowIndex = 0; rowIndex < height; rowIndex++) {
             boardBuilder.append("|");
             for (int columnIndex = 0; columnIndex < width; columnIndex++) {
-                int tileValue = grid[rowIndex][columnIndex];
-                if (tileValue == 0) {
-                    boardBuilder.append("  |");
-                } else {
-                    boardBuilder.append(String.format("%2d|", tileValue));
-                }
+                Tile tile = grid[rowIndex][columnIndex];
+                boardBuilder.append(tile.toString()).append("|");
             }
             boardBuilder.append("\n");
             boardBuilder.append(horizontalBorder);
