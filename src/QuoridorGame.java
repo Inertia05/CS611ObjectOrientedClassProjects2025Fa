@@ -57,7 +57,6 @@ public class QuoridorGame extends Game {
                     // This method returns false if no player switch should happen (e.g., bad input)
                     // But we use exceptions for that, so this is just a placeholder.
                 }
-                // Check for a winner *after* the move
                 if (isGameOver()) {
                     break;
                 }

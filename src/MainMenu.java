@@ -43,9 +43,10 @@ public class MainMenu {
                 return new PuzzleGame();
             case "2":
                 return new DotsAndBoxesGame();
-            case "3": // <-- ADDED
+            case "3":
                 return new QuoridorGame();
-            case "4": // 
+            case "4":
+                return null;
             default:
                 System.out.println("Invalid option. Please try again.");
                 return selectGame(scanner);
