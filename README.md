@@ -29,6 +29,8 @@ QuoridorBoard.java - A subclass of Board that implements specific functionalitie
 
 Game.java - This class manages the overall game loop.
 
+GameStats.java - This class tracks and displays game statistics for each player.
+
 DotsAndBoxesGame.java - A subclass of Game that implements the game logic for Dots and Boxes.
 
 PuzzleGame.java - A subclass of Game that implements the game logic for the sliding puzzle.
@@ -74,15 +76,23 @@ Please give us a full execution of what we should see on the screen. Label each 
         Menu:
         1. Start sliding puzzle game
         2. Start dot and box game
-        3. Exit
-        Choose an option:
+        3. Start Quoridor game
+        4. Exit
+        Choose an option: 
 
     Input:
-        2
+        3
 
     Output:
         
-        --- Setting up Dots and Boxes ---
+        --- Setting up Quoridor ---
+        Quoridor is a 2-player game on a 9x9 board.
+        Player 1 starts at 'e1' (bottom) and wins by reaching row 9.
+        Player 2 starts at 'e9' (top) and wins by reaching row 1.
+        Each player has 10 walls to place.
+
+        Movement: Use 'up', 'down', 'left', 'right' to move your pawn.
+        Walls: Use 'wall e3 h' (horizontal) or 'wall e3 v' (vertical) to place walls.
         Enter name for Player 1:
     
     Input:
@@ -95,129 +105,168 @@ Please give us a full execution of what we should see on the screen. Label each 
         P2
 
     Output:
-        Enter the dimensions of the dot grid.
-        Enter grid width and height (e.g., '4 3'): 
+The board is set. Let's play!
+   a   b   c   d   e   f   g   h   i
+  +---+---+---+---+---+---+---+---+---+
+9 |   |   |   |   | 2 |   |   |   |   | 9
+  +---+---+---+---+---+---+---+---+---+ 8
+8 |   |   |   |   |   |   |   |   |   | 8
+  +---+---+---+---+---+---+---+---+---+ 7
+7 |   |   |   |   |   |   |   |   |   | 7
+  +---+---+---+---+---+---+---+---+---+ 6
+6 |   |   |   |   |   |   |   |   |   | 6
+  +---+---+---+---+---+---+---+---+---+ 5
+5 |   |   |   |   |   |   |   |   |   | 5
+  +---+---+---+---+---+---+---+---+---+ 4
+4 |   |   |   |   |   |   |   |   |   | 4
+  +---+---+---+---+---+---+---+---+---+ 3
+3 |   |   |   |   |   |   |   |   |   | 3
+  +---+---+---+---+---+---+---+---+---+ 2
+2 |   |   |   |   |   |   |   |   |   | 2
+  +---+---+---+---+---+---+---+---+---+ 1
+1 |   |   |   |   | 1 |   |   |   |   | 1
+  +---+---+---+---+---+---+---+---+---+
+   a   b   c   d   e   f   g   h   i
+
+
+It's P1's turn (Team 1).
+Walls remaining: 10
+Enter command (up/down/left/right, 'wall e3 h', or 'quit'):
     
     Input:
-        6 6
+        up
 
     Output:
-        A 6x6 dot grid has been created. Let's play!
-        .   .   .   .   .   .
+   a   b   c   d   e   f   g   h   i
+  +---+---+---+---+---+---+---+---+---+
+9 |   |   |   |   | 2 |   |   |   |   | 9
+  +---+---+---+---+---+---+---+---+---+ 8
+8 |   |   |   |   |   |   |   |   |   | 8
+  +---+---+---+---+---+---+---+---+---+ 7
+7 |   |   |   |   |   |   |   |   |   | 7
+  +---+---+---+---+---+---+---+---+---+ 6
+6 |   |   |   |   |   |   |   |   |   | 6
+  +---+---+---+---+---+---+---+---+---+ 5
+5 |   |   |   |   |   |   |   |   |   | 5
+  +---+---+---+---+---+---+---+---+---+ 4
+4 |   |   |   |   |   |   |   |   |   | 4
+  +---+---+---+---+---+---+---+---+---+ 3
+3 |   |   |   |   |   |   |   |   |   | 3
+  +---+---+---+---+---+---+---+---+---+ 2
+2 |   |   |   |   | 1 |   |   |   |   | 2
+  +---+---+---+---+---+---+---+---+---+ 1
+1 |   |   |   |   |   |   |   |   |   | 1
+  +---+---+---+---+---+---+---+---+---+
+   a   b   c   d   e   f   g   h   i
 
-        .   .   .   .   .   .
 
-        .   .   .   .   .   .
-
-        .   .   .   .   .   .
-
-        .   .   .   .   .   .
-
-        .   .   .   .   .   .
-
-
-        It's team 1(P1)'s turn.
-        Enter move (e.g., '0 0 H' or 'quit'):
+It's P2's turn (Team 2).
+Walls remaining: 10
+Enter command (up/down/left/right, 'wall e3 h', or 'quit'):
 
     Input:
-        3 3 V
+        down
 
     Output:
-        .   .   .   .   .   .
+   a   b   c   d   e   f   g   h   i
+  +---+---+---+---+---+---+---+---+---+
+9 |   |   |   |   |   |   |   |   |   | 9
+  +---+---+---+---+---+---+---+---+---+ 8
+8 |   |   |   |   | 2 |   |   |   |   | 8
+  +---+---+---+---+---+---+---+---+---+ 7
+7 |   |   |   |   |   |   |   |   |   | 7
+  +---+---+---+---+---+---+---+---+---+ 6
+6 |   |   |   |   |   |   |   |   |   | 6
+  +---+---+---+---+---+---+---+---+---+ 5
+5 |   |   |   |   |   |   |   |   |   | 5
+  +---+---+---+---+---+---+---+---+---+ 4
+4 |   |   |   |   |   |   |   |   |   | 4
+  +---+---+---+---+---+---+---+---+---+ 3
+3 |   |   |   |   |   |   |   |   |   | 3
+  +---+---+---+---+---+---+---+---+---+ 2
+2 |   |   |   |   | 1 |   |   |   |   | 2
+  +---+---+---+---+---+---+---+---+---+ 1
+1 |   |   |   |   |   |   |   |   |   | 1
+  +---+---+---+---+---+---+---+---+---+
+   a   b   c   d   e   f   g   h   i
 
-        .   .   .   .   .   .
 
-        .   .   .   .   .   .
-
-        .   .   .   .   .   .
-                    |
-        .   .   .   .   .   .
-
-        .   .   .   .   .   .
-
-
-        It's team 2(P2)'s turn.
-        Enter move (e.g., '0 0 H' or 'quit'):
+It's P1's turn (Team 1).
+Walls remaining: 10
+Enter command (up/down/left/right, 'wall e3 h', or 'quit'):
 
     Input:
-        3 4 V
+        wall e3 h
 
     Output:
-        .   .   .   .   .   .
-
-        .   .   .   .   .   .
-
-        .   .   .   .   .   .
-
-        .   .   .   .   .   .
-                    |   |
-        .   .   .   .   .   .
-
-        .   .   .   .   .   .
-
-
-        It's team 1(P1)'s turn.
-        Enter move (e.g., '0 0 H' or 'quit'):
-
-    Input:
-        3 3 H
-    
-    Output:
-        .   .   .   .   .   .
-
-        .   .   .   .   .   .
-
-        .   .   .   .   .   .
-
-        .   .   .   .---.   .
-                    |   |
-        .   .   .   .   .   .
-
-        .   .   .   .   .   .
+   a   b   c   d   e   f   g   h   i
+  +---+---+---+---+---+---+---+---+---+
+9 |   |   |   |   |   |   |   |   |   | 9
+  +---+---+---+---+---+---+---+---+---+ 8
+8 |   |   |   |   | 2 |   |   |   |   | 8
+  +---+---+---+---+---+---+---+---+---+ 7
+7 |   |   |   |   |   |   |   |   |   | 7
+  +---+---+---+---+---+---+---+---+---+ 6
+6 |   |   |   |   |   |   |   |   |   | 6
+  +---+---+---+---+---+---+---+---+---+ 5
+5 |   |   |   |   |   |   |   |   |   | 5
+  +---+---+---+---+---+---+---+---+---+ 4
+4 |   |   |   |   |   |   |   |   |   | 4
+  +---+---+---+---+---+---+---+---+---+ 3
+3 |   |   |   |   |   |   |   |   |   | 3
+  +---+---+---+---+===+===+---+---+---+ 2
+2 |   |   |   |   | 1 |   |   |   |   | 2
+  +---+---+---+---+---+---+---+---+---+ 1
+1 |   |   |   |   |   |   |   |   |   | 1
+  +---+---+---+---+---+---+---+---+---+
+   a   b   c   d   e   f   g   h   i
 
 
-        It's team 2(P2)'s turn.
-        Enter move (e.g., '0 0 H' or 'quit'):
-
-    Input:
-        You completed 1 box(es)! Go again.
-        .   .   .   .   .   .
-
-        .   .   .   .   .   .
-
-        .   .   .   .   .   .
-
-        .   .   .   .---.   .
-                    | 2 |
-        .   .   .   .---.   .
-
-        .   .   .   .   .   .
-
-
-        It's team 2(P2)'s turn.
-        Enter move (e.g., '0 0 H' or 'quit'):
+It's P2's turn (Team 2).
+Walls remaining: 10
+Enter command (up/down/left/right, 'wall e3 h', or 'quit'):
 
     Input:
         quit
-
+    
     Output:
-        Returning to the main menu...
+Returning to the main menu...
 
-        ------------------------------------
+------------------------------------
 
 
-        Menu:
-        1. Start sliding puzzle game
-        2. Start dot and box game
-        3. Exit
-        Choose an option:
+Menu:
+1. Start sliding puzzle game
+2. Start dot and box game
+3. Start Quoridor game
+4. Exit
+Choose an option:
 
     Input:
-        3
+        4
 
     Output:
-        Goodbye!
+=== GAME STATISTICS ===
 
+P1's Statistics:
+----------------------------------------
+Game                  Wins  Losses   Total
+----------------------------------------
+Quoridor                 0       1       1
+----------------------------------------
+TOTAL                    0       1       1
+
+P2's Statistics:
+----------------------------------------
+Game                  Wins  Losses   Total
+----------------------------------------
+Quoridor                 0       1       1
+----------------------------------------
+TOTAL                    0       1       1
+
+========================================
+Goodbye!
+   
 
 ```
 
