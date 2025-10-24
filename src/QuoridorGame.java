@@ -71,7 +71,7 @@ public class QuoridorGame extends Game {
 
         System.out.println("\n--- Game Over! ---");
         printBoard();
-        // The winner is the *current* player, since the game ends right after their move.
+        // The winner is the current player, since the game ends right after their move.
         System.out.println("Congratulations " + currentPlayer.getName() + ", you win!");
         
         // Record win/loss

@@ -19,7 +19,6 @@ public class PuzzleGame extends Game {
     protected String getGameInfo(Scanner scanner) {
         System.out.println("\n--- Setting up Sliding Puzzle ---");
         System.out.print("Enter your name: ");
-        // This is the corrected line:
         this.player = new Player(scanner.nextLine(), 1); // Default to Team 1
 
         while (true) {
