@@ -5,7 +5,7 @@
 
 
 # CS611-Assignment < 3 >
-## < Dots and Boxes Game >
+## < Quoridor Game >
 ---------------------------------------------------------------------------
 - Name1: placeholder
 - Email1: placeholder
