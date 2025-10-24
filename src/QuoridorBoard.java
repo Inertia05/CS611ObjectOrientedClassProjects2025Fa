@@ -324,7 +324,7 @@ public class QuoridorBoard extends Board {
         StringBuilder sb = new StringBuilder();
         String hWall = "===";
         String hGroove = "---";
-        String vWall = "‖";
+        String vWall = "H";
         String vGroove = "|";
         String p1 = " 1 ";
         String p2 = " 2 ";
