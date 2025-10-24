@@ -60,3 +60,4 @@ Significant enhancements and refinements were made based on feedback and project
 2.  **Player Class Enhancement:** Refactored the `Player` class to include a `teamId` attribute, improving user feedback during gameplay by displaying team information.
 3.  **MainMenu Update:** Modified `MainMenu.java` to incorporate Quoridor as a playable option.
 4.  **`PuzzleBoard` Refactoring:** Updated `PuzzleBoard.java` to correctly utilize the `Tile` class for representing board squares, addressing previous feedback and improving object-oriented design. The `README.md` was also updated to reflect this change.
+5.  **Game Statistics:** Added the `GameStats` class and integrated statistic recording and display features into the application flow via `MainMenu`.
