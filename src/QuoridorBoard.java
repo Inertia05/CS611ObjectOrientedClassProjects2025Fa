@@ -52,16 +52,73 @@ public class QuoridorBoard extends Board {
         if (parts.length == 0) throw new IllegalArgumentException("No command entered.");
 
         String command = parts[0];
-        if (command.equals("move") && parts.length == 2) {
-            return movePawn(parts[1], player);
-        } else if (command.equals("wall") && parts.length == 3) {
+        
+        // Handle directional movement commands
+        if (command.equals("up") || command.equals("down") || 
+            command.equals("left") || command.equals("right")) {
+            return movePawnByDirection(command, player);
+        }
+        // Handle wall placement
+        else if (command.equals("wall") && parts.length == 3) {
             return placeWall(parts[1], parts[2].charAt(0), player);
-        } else {
-            throw new IllegalArgumentException("Invalid command format.");
+        } 
+        // Keep backward compatibility with coordinate-based move
+        else if (command.equals("move") && parts.length == 2) {
+            return movePawn(parts[1], player);
+        }
+        else {
+            throw new IllegalArgumentException("Invalid command format. Use: up/down/left/right, or 'wall e3 h'");
         }
     }
 
     // --- Pawn Movement Logic ---
+
+    private boolean movePawnByDirection(String direction, Player player) {
+        int cRow, cCol;
+        if (player.equals(playerOne)) {
+            cRow = p1Row; 
+            cCol = p1Col;
+        } else {
+            cRow = p2Row; 
+            cCol = p2Col;
+        }
+        
+        int tRow = cRow;
+        int tCol = cCol;
+        
+        // Calculate target based on direction
+        switch (direction) {
+            case "up":
+                tRow = cRow + 1;  // Moving up increases row number
+                break;
+            case "down":
+                tRow = cRow - 1;  // Moving down decreases row number
+                break;
+            case "left":
+                tCol = cCol - 1;  // Moving left decreases column
+                break;
+            case "right":
+                tCol = cCol + 1;  // Moving right increases column
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid direction: " + direction);
+        }
+        
+        // Check bounds
+        if (tRow < 0 || tRow > 8 || tCol < 0 || tCol > 8) {
+            throw new IllegalArgumentException("Cannot move off the board.");
+        }
+        
+        // Convert to coordinate and use existing move logic
+        String targetCoord = coordToString(tRow, tCol);
+        return movePawn(targetCoord, player);
+    }
+    
+    private String coordToString(int row, int col) {
+        char colChar = (char)('a' + col);
+        char rowChar = (char)('1' + row);
+        return "" + colChar + rowChar;
+    }
 
     private boolean movePawn(String coord, Player player) {
         int[] target = parseCoord(coord);
@@ -78,20 +135,59 @@ public class QuoridorBoard extends Board {
         int dr = tRow - cRow;
         int dc = tCol - cCol;
 
+        // Check if this is a valid move (1 space orthogonal or a valid jump)
         boolean isOneSpaceOrthogonal = (Math.abs(dr) == 1 && dc == 0) || (dr == 0 && Math.abs(dc) == 1);
-        if (!isOneSpaceOrthogonal) {
-            throw new IllegalArgumentException("Pawns can only move 1 space up, down, left, or right.");
+        boolean isTwoSpaceJump = (Math.abs(dr) == 2 && dc == 0) || (dr == 0 && Math.abs(dc) == 2);
+        
+        if (!isOneSpaceOrthogonal && !isTwoSpaceJump) {
+            throw new IllegalArgumentException("Invalid move. Pawns can move 1 space orthogonally or jump over an opponent.");
         }
 
-        if (tRow == oRow && tCol == oCol) {
-            throw new IllegalArgumentException("Cannot move onto the other player's square.");
-            // Note: This is where jump logic would go.
+        // Handle normal one-space move
+        if (isOneSpaceOrthogonal) {
+            // Check if trying to move onto opponent
+            if (tRow == oRow && tCol == oCol) {
+                // This is where we attempt to jump over the opponent
+                int jumpRow = tRow + (tRow - cRow);  // Continue in same direction
+                int jumpCol = tCol + (tCol - cCol);
+                
+                // Check if jump destination is valid
+                if (jumpRow < 0 || jumpRow > 8 || jumpCol < 0 || jumpCol > 8) {
+                    throw new IllegalArgumentException("Cannot jump - would go off the board.");
+                }
+                
+                // Check if there's a wall blocking the jump
+                if (isWallBetween(tRow, tCol, jumpRow, jumpCol)) {
+                    throw new IllegalArgumentException("Cannot jump - wall is blocking the jump.");
+                }
+                
+                // Perform the jump
+                tRow = jumpRow;
+                tCol = jumpCol;
+            } else {
+                // Normal move - check for wall
+                if (isWallBetween(cRow, cCol, tRow, tCol)) {
+                    throw new IllegalArgumentException("A wall is blocking that move.");
+                }
+            }
+        }
+        // Handle two-space jump move
+        else if (isTwoSpaceJump) {
+            // For a two-space move to be valid, there must be an opponent in between
+            int midRow = cRow + (dr / 2);
+            int midCol = cCol + (dc / 2);
+            
+            if (midRow != oRow || midCol != oCol) {
+                throw new IllegalArgumentException("Can only jump 2 spaces if opponent is in between.");
+            }
+            
+            // Check if there are walls blocking the jump
+            if (isWallBetween(cRow, cCol, midRow, midCol) || isWallBetween(midRow, midCol, tRow, tCol)) {
+                throw new IllegalArgumentException("A wall is blocking the jump.");
+            }
         }
 
-        if (isWallBetween(cRow, cCol, tRow, tCol)) {
-            throw new IllegalArgumentException("A wall is blocking that move.");
-        }
-
+        // Update player position
         if (player.equals(playerOne)) {
             p1Row = tRow; p1Col = tCol;
         } else {

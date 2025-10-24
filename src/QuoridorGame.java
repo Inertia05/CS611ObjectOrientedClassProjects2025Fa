@@ -22,6 +22,8 @@ public class QuoridorGame extends Game {
         System.out.println("Player 1 starts at 'e1' (bottom) and wins by reaching row 9.");
         System.out.println("Player 2 starts at 'e9' (top) and wins by reaching row 1.");
         System.out.println("Each player has 10 walls to place.");
+        System.out.println("\nMovement: Use 'up', 'down', 'left', 'right' to move your pawn.");
+        System.out.println("Walls: Use 'wall e3 h' (horizontal) or 'wall e3 v' (vertical) to place walls.");
 
         System.out.print("Enter name for Player 1: ");
         this.playerOne = new Player(scanner.nextLine(), 1);
@@ -44,7 +46,7 @@ public class QuoridorGame extends Game {
             printBoard();
             System.out.println("\nIt's " + currentPlayer.getName() + "'s turn (Team " + currentPlayer.getTeamId() + ").");
             System.out.println("Walls remaining: " + board.getWallCount(currentPlayer));
-            System.out.print("Enter move (e.g., 'move e2' or 'wall e3 h' or 'quit'): ");
+            System.out.print("Enter command (up/down/left/right, 'wall e3 h', or 'quit'): ");
             String userInput = scanner.nextLine().trim().toLowerCase();
 
             if (userInput.equalsIgnoreCase("quit")) {
