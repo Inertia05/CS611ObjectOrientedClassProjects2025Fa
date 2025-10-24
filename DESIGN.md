@@ -23,7 +23,7 @@ The application's architecture is founded on key Object-Oriented principles, pri
 
 ### UML Diagram:
 
-![uml.png](uml/uml.png)*(Insert your UML diagram image here. You can use Markdown image syntax: `![UML Diagram](path/to/your/uml.png)`)*
+![uml.png](uml/uml.png)
 
 The UML diagram visually represents the relationships described above, showcasing the inheritance from `Game` and `Board`, and the composition relationship where each `Game` instance *has a* corresponding `Board` instance. The addition of `QuoridorGame` and `QuoridorBoard` follows this established pattern precisely.
 
