@@ -62,8 +62,8 @@ We have a quit button in both main menu and in the games.
 Your directions on how to run the code. Make sure to be as thorough as possible!
 
 Navigate to the directory "CS611ObjectOrientedClassProjects2025Fa" after unzipping the files
-Use javac src/*.java   to compile all the .java files in the src folder.
-Then use java -cp src MainMenu to run the program.
+Use javac "src/*.java"  to compile all the .java files in the src folder.
+Then use "java -cp src MainMenu" to run the program.
 
 ## Input/Output Example
 ---------------------------------------------------------------------------
